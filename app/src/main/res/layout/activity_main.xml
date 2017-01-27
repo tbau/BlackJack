@@ -9,7 +9,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/pooltabletexture"
     tools:context="com.bau_hornick.blackjack.MainActivity">
 
     <ImageView
@@ -25,7 +24,7 @@
         android:layout_width="200dp"
         android:layout_height="75dp"
         android:layout_marginTop="57dp"
-        android:id="@+id/play_game"
+        android:id="@+id/play_button"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:background="#a30000"
