@@ -75,4 +75,44 @@
         android:layout_alignEnd="@+id/imageView"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:text="Stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stand"
+        android:background="#ff4c4c"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="HIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hit"
+        style="@style/Widget.AppCompat.Button"
+        android:elevation="0dp"
+        android:background="#6fdc6f"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/stand"
+        android:layout_marginEnd="13dp"/>
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/player_score"
+        android:textSize="30sp"
+        android:textAlignment="viewEnd"
+        android:layout_alignTop="@+id/deck_count_textView"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

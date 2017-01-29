@@ -11,10 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#dedede"
     tools:context="com.bau_hornick.blackjack.MainActivity">
-  
+
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         app:srcCompat="@drawable/blackjacklogo"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
