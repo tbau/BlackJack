@@ -30,6 +30,8 @@ public class Deck implements Serializable {
      R.drawable.white_deck_queen_of_hearts,R.drawable.white_deck_queen_of_spades,R.drawable.white_deck_king_of_clubs,
      R.drawable.white_deck_king_of_diamonds,R.drawable.white_deck_king_of_hearts,R.drawable.white_deck_king_of_spades};
 
+    private String suit[] = {"clubs","diamonds","hearts","spades"};
+
     public ArrayList<Card> getDeck() {
         return deck;
     }
@@ -62,10 +64,10 @@ public class Deck implements Serializable {
     }
 
     public void populate(){
-        int imgCount = 0; //iterates through the 52 cards
+
         int value; //value of card to be added to Card object
         for(int i = 2; i <= 14; i++)
-        {
+         {
             for(int j = 0; j < 4; j++)
             {
                 if(i > 11)
@@ -77,10 +79,9 @@ public class Deck implements Serializable {
                     value = i; //Cards 2-11 keep their value
                 }
 
-                deck.add(new Card(imageIds[imgCount], value, suits[j], true));
-                imgCount++; //move to next image in order of suits
+                deck.add(new Card(imageIds[j+4*(i-2)], value, suits[j], true));
             }
-            imgCount++;
+           
         }
     }
 }
