@@ -9,6 +9,12 @@ public class Card {
     private int value;
     private String suit;
 
+    public Card(int image, int value, String suit) {
+        this.image = image;
+        this.value = value;
+        this.suit = suit;
+    }
+
     public String getSuit()
     {
         return suit;
