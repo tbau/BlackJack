@@ -39,8 +39,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         playerHand=new Deck(0);
         dealerHand = new Deck(0);
 
-        if(startGame==0)
+        if(startGame==0){
             deck.shuffle();
+        startGame=1;
+        }
     }
 
     @Override
