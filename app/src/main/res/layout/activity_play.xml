@@ -9,7 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bau_hornick.blackjack.DealerActivity">
+    tools:context="com.bau_hornick.blackjack.DealerActivity"
+    tools:background="#169C61">
 
     <Button
         android:text="Bet-"
@@ -56,7 +57,7 @@
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/imageView"
+        android:id="@+id/deck_imageView"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -71,8 +72,8 @@
         android:textColor="#000000"
         android:gravity="center"
         android:textSize="20sp"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignBottom="@+id/deck_imageView"
+        android:layout_alignEnd="@+id/deck_imageView"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -114,5 +115,126 @@
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+  <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/played_cards_imageView"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/deck_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card1_imageView"
+        android:layout_height="100dp"
+        android:layout_below="@+id/deck_imageView"
+        android:layout_alignEnd="@+id/played_cards_imageView"
+        android:layout_marginEnd="45dp"
+        android:layout_marginTop="25dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card2_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/dealer_card1_imageView"
+        android:layout_alignEnd="@+id/played_cards_imageView"
+        android:layout_marginEnd="22dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card3_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/dealer_card1_imageView"
+        android:layout_toEndOf="@+id/deck_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card4_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/dealer_card1_imageView"
+        android:layout_alignStart="@+id/dealer_card3_imageView"
+        android:layout_marginStart="28dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card5_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/dealer_card1_imageView"
+        android:layout_toEndOf="@+id/bet_textView"
+        android:layout_marginStart="9dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card1_imageView"
+        android:layout_height="100dp"
+        android:layout_above="@+id/button2"
+        android:layout_alignStart="@+id/dealer_card1_imageView"
+        android:layout_marginBottom="12dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card2_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_alignStart="@+id/dealer_card2_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card3_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_toEndOf="@+id/button2"
+        android:layout_marginStart="7dp" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card4_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_alignStart="@+id/dealer_card4_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card5_imageView"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_alignStart="@+id/dealer_card5_imageView" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:id="@+id/player_score_textView"
+        android:layout_above="@+id/player_card1_imageView"
+        android:layout_alignEnd="@+id/player_card4_imageView"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignStart="@+id/dealer_card5_imageView"
+        android:paddingLeft="10sp" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/dealer_score_textView"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/button2"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignEnd="@+id/player_card4_imageView"
+        android:layout_alignStart="@+id/player_card5_imageView"
+        android:paddingLeft="10sp" />
 
 </RelativeLayout>
