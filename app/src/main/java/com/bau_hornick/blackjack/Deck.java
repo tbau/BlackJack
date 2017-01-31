@@ -10,6 +10,7 @@ import java.util.Random;
 public class Deck implements Serializable {
     private ArrayList<Card> deck; //vector of 52 cards
     private Random rand;
+    private String suits[] = {"clubs", "diamonds", "hearts", "spades"};
     private int imageIds[]=
     {R.drawable.white_deck_2_of_clubs,R.drawable.white_deck_2_of_diamonds,R.drawable.white_deck_2_of_hearts,
      R.drawable.white_deck_2_of_spades,R.drawable.white_deck_3_of_clubs,R.drawable.white_deck_3_of_diamonds,
@@ -21,7 +22,8 @@ public class Deck implements Serializable {
      R.drawable.white_deck_7_of_diamonds,R.drawable.white_deck_7_of_hearts,R.drawable.white_deck_7_of_spades,
      R.drawable.white_deck_8_of_clubs,R.drawable.white_deck_8_of_diamonds,R.drawable.white_deck_8_of_hearts,
      R.drawable.white_deck_8_of_spades,R.drawable.white_deck_9_of_clubs,R.drawable.white_deck_9_of_diamonds,
-     R.drawable.white_deck_9_of_hearts,R.drawable.white_deck_9_of_spades,R.drawable.white_deck_ace_of_clubs,
+     R.drawable.white_deck_9_of_hearts,R.drawable.white_deck_9_of_spades, R.drawable.white_deck_10_of_clubs,
+     R.drawable.white_deck_10_of_diamonds, R.drawable.white_deck_10_of_hearts, R.drawable.white_deck_10_of_spades, R.drawable.white_deck_ace_of_clubs,
      R.drawable.white_deck_ace_of_diamonds,R.drawable.white_deck_ace_of_hearts,R.drawable.white_deck_ace_of_spades,
      R.drawable.white_deck_jack_of_clubs,R.drawable.white_deck_jack_of_diamonds,R.drawable.white_deck_jack_of_hearts,
      R.drawable.white_deck_jack_of_spades,R.drawable.white_deck_queen_of_clubs,R.drawable.white_deck_queen_of_diamonds,
@@ -63,21 +65,23 @@ public class Deck implements Serializable {
 
     public void populate(){
 
-        int value=2;
-        for(int i = 1; i <= 13; i++)
-        {
-            if(i<9){
-                value=i+1;
-            }
-            else if(i==9)
-                value=11;
-            else
-            value=10;
-
+        int value; //value of card to be added to Card object
+        for(int i = 2; i <= 14; i++)
+         {
             for(int j = 0; j < 4; j++)
             {
-                deck.add(new Card(imageIds[j+4*(i-1)],value,suit[j],false));
+                if(i > 11)
+                {
+                    value = 10; //face cards
+                }
+
+                else {
+                    value = i; //Cards 2-11 keep their value
+                }
+
+                deck.add(new Card(imageIds[j+4*(i-2)], value, suits[j], true));
             }
+           
         }
     }
 }
