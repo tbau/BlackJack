@@ -21,6 +21,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         b = (Button) findViewById(R.id.decrease_bet_button);
         b.setOnClickListener(this);
+
+        b = (Button) findViewById(R.id.start_button);
+        b.setOnClickListener(this);
     }
 
     @Override
@@ -33,7 +36,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             bet++;
             TextView betView = (TextView) findViewById(R.id.bet_textView);
             betView.setText(bet + "(" + (money - bet) + ")");
+        } else if (v.getId() == R.id.start_button) {
+
         }
     }
 }
-    
