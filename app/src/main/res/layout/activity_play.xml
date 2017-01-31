@@ -13,42 +13,32 @@
     tools:background="#169C61">
 
     <Button
-        android:text="Bet-"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:elevation="0dp"
-        android:visibility="visible"
-        android:layout_above="@+id/increase_bet_button"
-        android:layout_alignParentStart="true" />
-
-    <Button
         android:text="Bet+"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/increase_bet_button"
         android:elevation="0dp"
         android:visibility="visible"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/decrease_bet_button"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_height="wrap_content"
         android:id="@+id/current_money_textView"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/increase_bet_button"
-        android:layout_below="@+id/button2"
+        android:layout_toEndOf="@+id/decrease_bet_button"
+        android:layout_below="@+id/increase_bet_button"
         android:layout_width="40dp"
         android:textColor="#000000"
         android:gravity="left|center"
-        android:text="99" />
+        android:text="100" />
 
     <TextView
         android:layout_height="wrap_content"
         android:id="@+id/bet_textView"
-        android:layout_alignTop="@+id/button2"
-        android:layout_toEndOf="@+id/button2"
-        android:layout_above="@+id/increase_bet_button"
+        android:layout_alignTop="@+id/increase_bet_button"
+        android:layout_toEndOf="@+id/increase_bet_button"
+        android:layout_above="@+id/decrease_bet_button"
         android:text="1(99)"
         android:gravity="left|center"
         android:layout_width="40dp"
@@ -80,7 +70,7 @@
         android:text="Stand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/stand"
+        android:id="@+id/stand_button"
         android:background="#ff4c4c"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
@@ -89,12 +79,12 @@
         android:text="HIT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hit"
+        android:id="@+id/hit_button"
         style="@style/Widget.AppCompat.Button"
         android:elevation="0dp"
         android:background="#6fdc6f"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/stand"
+        android:layout_toStartOf="@+id/stand_button"
         android:layout_marginEnd="13dp"/>
 
     <TextView
@@ -174,7 +164,7 @@
         app:srcCompat="@drawable/red_card_back"
         android:id="@+id/player_card1_imageView"
         android:layout_height="100dp"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/increase_bet_button"
         android:layout_alignStart="@+id/dealer_card1_imageView"
         android:layout_marginBottom="12dp" />
 
@@ -192,7 +182,7 @@
         android:id="@+id/player_card3_imageView"
         android:layout_height="100dp"
         android:layout_alignTop="@+id/player_card1_imageView"
-        android:layout_toEndOf="@+id/button2"
+        android:layout_toEndOf="@+id/increase_bet_button"
         android:layout_marginStart="7dp" />
 
     <ImageView
@@ -231,10 +221,20 @@
         android:id="@+id/dealer_score_textView"
         android:gravity="left"
         android:textSize="18sp"
-        android:layout_alignBaseline="@+id/button2"
-        android:layout_alignBottom="@+id/button2"
+        android:layout_alignBaseline="@+id/increase_bet_button"
+        android:layout_alignBottom="@+id/increase_bet_button"
         android:layout_alignEnd="@+id/player_card4_imageView"
         android:layout_alignStart="@+id/player_card5_imageView"
         android:paddingLeft="10sp" />
+
+    <Button
+        android:text="Bet-"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/decrease_bet_button"
+        android:elevation="0dp"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
