@@ -9,5 +9,10 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        //listener for hit & stand
+        //5 card max
+        //after dealer's turn over, determine who wins
+        //start DealerActivity
     }
 }
