@@ -80,7 +80,6 @@ public class Deck implements Serializable {
                 deck.add(new Card(imageIds[imgCount], value, suits[j], true));
                 imgCount++; //move to next image in order of suits
             }
-            imgCount++;
         }
     }
 }

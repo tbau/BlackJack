@@ -19,6 +19,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     Deck deck;
     Deck playerHand;
     Deck dealerHand;
+    ArrayList<ImageView> player;
+    ArrayList<ImageView> dealer;
+
+    int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
+                              R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
+                              R.id.dealer_card5_imageView};
+    int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
+                              R.id.player_card2_imageView, R.id.player_card3_imageView,
+                              R.id.player_card3_imageView, R.id.player_card4_imageView,
+                              R.id.player_card5_imageView};
+
 
     int startGame=0;
     @Override
@@ -80,10 +91,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
             numberInDeck-=4;
 
+            //set Image Resources in Arraylist of ImageViews for both dealer and player
+            for(int i = 0; i < dealerImageViews.length; i++)
+            {
+                ImageView dealerImg = (ImageView) findViewById(dealerImageViews[i]);
+                dealer.add(dealerImg);
+
+                ImageView playerImg = (ImageView) findViewById(playerImageViews[i]);
+                player.add(playerImg);
+            }
+
+            //Set 1 of dealer cards to the back card. Add to card class.
+            dealer.get(0).setImageResource(R.drawable.red_card_back);
+
             TextView tv = (TextView) findViewById(R.id.deck_count_textView);
             tv.setText(String.valueOf(money));
 
             Intent intent = new Intent(this,PlayerActivity.class);
+            intent.putExtra("playerHand", playerHand);
+            intent.putExtra("dealerHand", dealerHand);
             intent.putExtra("bet",bet);
             intent.putExtra("money",money);
             intent.putExtra("deck",deck);
