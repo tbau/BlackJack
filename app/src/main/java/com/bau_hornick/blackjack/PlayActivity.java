@@ -79,7 +79,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 deck.reset();
             }
 
-            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));  //Add card from deck to
+            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
             deck.getDeck().remove(deck.getDeck().size()-1);
 
             dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
