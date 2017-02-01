@@ -78,16 +78,6 @@
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/dealer_card2_imageView"
-        android:layout_height="100dp"
-        android:layout_alignTop="@+id/dealer_card1_imageView"
-        android:layout_alignEnd="@+id/played_cards_imageView"
-        android:layout_marginEnd="22dp"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:layout_width="120dp"
-        app:srcCompat="@drawable/red_card_back"
         android:id="@+id/player_card1_imageView"
         android:layout_height="100dp"
         android:layout_above="@+id/increase_bet_button"
@@ -234,5 +224,15 @@
         android:visibility="invisible"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/deck_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/dealer_card2_imageView"
+        android:layout_height="100dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/dealer_card1_imageView"
+        android:layout_alignEnd="@+id/dealer_score_textView" />
 
 </RelativeLayout>
