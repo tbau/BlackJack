@@ -19,16 +19,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     Deck deck;
     Deck playerHand;
     Deck dealerHand;
-    ArrayList<ImageView> playerImages;
-    ArrayList<ImageView> dealerImages;
 
-    int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
-                              R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
-                              R.id.dealer_card5_imageView};
-    int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
-                              R.id.player_card2_imageView, R.id.player_card3_imageView,
-                              R.id.player_card3_imageView, R.id.player_card4_imageView,
-                              R.id.player_card5_imageView};
 
 
     int startGame=0;
@@ -93,35 +84,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
             numberInDeck-=4;
 
-            //set Image Resources in Arraylist of ImageViews for both dealer and player
-            for(int i = 0; i < dealerImageViews.length; i++)
-            {
-                ImageView dealerImg = (ImageView) findViewById(dealerImageViews[i]);
-                dealerImages.add(dealerImg);
-
-                ImageView playerImg = (ImageView) findViewById(playerImageViews[i]);
-                playerImages.add(playerImg);
-            }
-
-            //Set 1 of dealer cards to the back card. Add to card class.
-            dealerImages.get(0).setImageResource(R.drawable.red_card_back);
-            dealerImages.get(0).setVisibility(View.VISIBLE);
-            dealerImages.get(1).setImageResource(dealerHand.getDeck().get(1).getImage());
-
-            playerImages.get(0).setImageResource(playerHand.getDeck().get(0).getImage());
-            playerImages.get(0).setVisibility(View.VISIBLE);
-
-            playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
-            playerImages.get(1).setVisibility(View.VISIBLE);
-
-            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-            tv.setText(String.valueOf(money));
-
-            Intent intent = new Intent(this,PlayerActivity.class);
+            Intent intent = new Intent(getApplicationContext(),PlayerActivity.class);
             intent.putExtra("playerHand", playerHand);
             intent.putExtra("dealerHand", dealerHand);
-            intent.putExtra("dealerImages", dealerImages);
-            intent.putExtra("playerImages", playerImages);
+            //intent.putExtra("dealerImages", dealerImages);
+            //intent.putExtra("playerImages", playerImages);
             intent.putExtra("bet",bet);
             intent.putExtra("money",money);
             intent.putExtra("deck",deck);

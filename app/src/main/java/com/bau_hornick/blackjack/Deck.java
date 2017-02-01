@@ -35,6 +35,7 @@ public class Deck implements Serializable {
     }
 
     public Deck(int fill) {
+        deck = new ArrayList<Card>();
         if(fill==1){
             populate();
         }
@@ -76,8 +77,8 @@ public class Deck implements Serializable {
                 else {
                     value = i; //Cards 2-11 keep their value
                 }
-
-                deck.add(new Card(imageIds[j+4*(i-2)], value, suits[j], true));
+                Card temp = new Card(imageIds[j+4*(i-2)], value, suits[j], true);
+                deck.add(temp);
             }
         }
     }
