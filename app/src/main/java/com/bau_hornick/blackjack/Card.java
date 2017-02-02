@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by ahornick on 1/30/2017.
  */
 
-public class Card {
+public class Card implements Serializable {
     private int image;
     private int value;
     private String suit;

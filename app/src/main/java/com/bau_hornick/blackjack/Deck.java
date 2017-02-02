@@ -23,18 +23,20 @@ public class Deck implements Serializable {
      R.drawable.white_deck_8_of_clubs,R.drawable.white_deck_8_of_diamonds,R.drawable.white_deck_8_of_hearts,
      R.drawable.white_deck_8_of_spades,R.drawable.white_deck_9_of_clubs,R.drawable.white_deck_9_of_diamonds,
      R.drawable.white_deck_9_of_hearts,R.drawable.white_deck_9_of_spades, R.drawable.white_deck_10_of_clubs,
-     R.drawable.white_deck_10_of_diamonds, R.drawable.white_deck_10_of_hearts, R.drawable.white_deck_10_of_spades, R.drawable.white_deck_ace_of_clubs,
-     R.drawable.white_deck_ace_of_diamonds,R.drawable.white_deck_ace_of_hearts,R.drawable.white_deck_ace_of_spades,
-     R.drawable.white_deck_jack_of_clubs,R.drawable.white_deck_jack_of_diamonds,R.drawable.white_deck_jack_of_hearts,
-     R.drawable.white_deck_jack_of_spades,R.drawable.white_deck_queen_of_clubs,R.drawable.white_deck_queen_of_diamonds,
-     R.drawable.white_deck_queen_of_hearts,R.drawable.white_deck_queen_of_spades,R.drawable.white_deck_king_of_clubs,
-     R.drawable.white_deck_king_of_diamonds,R.drawable.white_deck_king_of_hearts,R.drawable.white_deck_king_of_spades};
+     R.drawable.white_deck_10_of_diamonds, R.drawable.white_deck_10_of_hearts, R.drawable.white_deck_10_of_spades,
+     R.drawable.white_deck_ace_of_clubs, R.drawable.white_deck_ace_of_diamonds,R.drawable.white_deck_ace_of_hearts,
+     R.drawable.white_deck_ace_of_spades,R.drawable.white_deck_jack_of_clubs,R.drawable.white_deck_jack_of_diamonds,
+     R.drawable.white_deck_jack_of_hearts,R.drawable.white_deck_jack_of_spades,R.drawable.white_deck_queen_of_clubs,
+     R.drawable.white_deck_queen_of_diamonds,R.drawable.white_deck_queen_of_hearts,R.drawable.white_deck_queen_of_spades,
+     R.drawable.white_deck_king_of_clubs,R.drawable.white_deck_king_of_diamonds,R.drawable.white_deck_king_of_hearts,
+     R.drawable.white_deck_king_of_spades};
 
     public ArrayList<Card> getDeck() {
         return deck;
     }
 
     public Deck(int fill) {
+        deck = new ArrayList<Card>();
         if(fill==1){
             populate();
         }
@@ -46,15 +48,18 @@ public class Deck implements Serializable {
     ArrayList<Card> cards = deck;
     int randomNumber;
     Card temp;
+
+    for(int j=0;j<10;j++){
     for(int i=0;i<cards.size();i++){
         randomNumber=rand.nextInt(51);
-        temp=cards.get(i);
-        cards.remove(i);
-        cards.add(i,cards.get(randomNumber));
-        cards.remove(randomNumber);
-        cards.add(randomNumber,temp);
+        while(randomNumber==i){
+             randomNumber=rand.nextInt(51);
         }
-    }
+        temp=cards.get(i);
+        cards.set(i,cards.get(randomNumber));
+        cards.set(randomNumber,temp);
+        }
+    }}
     public void reset(){
 
         deck.clear();
@@ -76,8 +81,8 @@ public class Deck implements Serializable {
                 else {
                     value = i; //Cards 2-11 keep their value
                 }
-
-                deck.add(new Card(imageIds[j+4*(i-2)], value, suits[j], true));
+                Card temp = new Card(imageIds[j+4*(i-2)], value, suits[j], true);
+                deck.add(temp);
             }
         }
     }
