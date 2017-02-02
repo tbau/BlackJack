@@ -14,7 +14,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     int bet=1;
     int money = 100;
-    int numberInDeck=52;
 
     Deck deck;
     Deck playerHand;
@@ -37,14 +36,44 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         b = (Button) findViewById(R.id.start_button);
         b.setOnClickListener(this);
 
-        deck=new Deck(1);
-        playerHand=new Deck(0);
-        dealerHand = new Deck(0);
+        if(deck!=null)
+        {
 
+        }
+        else{
+            deck=new Deck(1);
+        }
+        if(playerHand!=null){
+
+        }else{
+            playerHand=new Deck(0);
+        }
+
+        if(dealerHand!=null) {
+
+        }
+        else{
+            dealerHand = new Deck(0);
+        }
         if(startGame==0){
             deck.shuffle();
         startGame=1;
         }
+
+        TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+        tv.setText(String.valueOf(deck.getDeck().size()));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+        tv.setText(String.valueOf(deck.getDeck().size()));
+
+        dealerHand.getDeck().clear();
+        playerHand.getDeck().clear();
+
     }
 
     @Override
@@ -62,14 +91,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             TextView betView = (TextView) findViewById(R.id.bet_textView);
             betView.setText(bet + "(" + (money - bet) + ")");
         } else if (v.getId() == R.id.start_button) {
-            ImageView im = (ImageView) findViewById(R.id.dealer_card1_imageView);
-            im.setVisibility(View.VISIBLE);
+            //ImageView im = (ImageView) findViewById(R.id.dealer_card1_imageView);
+            //im.setVisibility(View.VISIBLE);
 
             if(deck.getDeck().size()<=10)
             {
                 deck.reset();
             }
 
+//First two cards
             dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
             deck.getDeck().remove(deck.getDeck().size()-1);
 
@@ -82,7 +112,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
             deck.getDeck().remove(deck.getDeck().size()-1);
 
-            numberInDeck-=4;
+//For testing
+            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+            deck.getDeck().remove(deck.getDeck().size()-1);
+
+            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+            deck.getDeck().remove(deck.getDeck().size()-1);
+
+            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+            deck.getDeck().remove(deck.getDeck().size()-1);
+
+            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+            deck.getDeck().remove(deck.getDeck().size()-1);
+
 
             Intent intent = new Intent(getApplicationContext(),PlayerActivity.class);
             intent.putExtra("playerHand", playerHand);

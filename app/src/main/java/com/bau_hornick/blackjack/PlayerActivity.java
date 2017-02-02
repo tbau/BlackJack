@@ -23,8 +23,7 @@ public class PlayerActivity extends AppCompatActivity {
             R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
             R.id.dealer_card5_imageView};
     int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
-            R.id.player_card2_imageView, R.id.player_card3_imageView,
-            R.id.player_card3_imageView, R.id.player_card4_imageView,
+            R.id.player_card3_imageView,R.id.player_card4_imageView,
             R.id.player_card5_imageView};
 
     @Override
@@ -74,6 +73,20 @@ public class PlayerActivity extends AppCompatActivity {
 
         playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
         playerImages.get(1).setVisibility(View.VISIBLE);
+
+
+
+        dealerImages.get(2).setImageResource(dealerHand.getDeck().get(2).getImage());
+        dealerImages.get(2).setVisibility(View.VISIBLE);
+
+        playerImages.get(2).setImageResource(playerHand.getDeck().get(2).getImage());
+        playerImages.get(2).setVisibility(View.VISIBLE);
+
+        dealerImages.get(3).setImageResource(dealerHand.getDeck().get(3).getImage());
+        dealerImages.get(3).setVisibility(View.VISIBLE);
+
+        playerImages.get(3).setImageResource(playerHand.getDeck().get(3).getImage());
+        playerImages.get(3).setVisibility(View.VISIBLE);
 
         TextView tv = (TextView) findViewById(R.id.bet_textView);
         tv.setText(bet + "(" + (money - bet) + ")");
