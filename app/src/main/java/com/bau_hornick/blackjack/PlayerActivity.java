@@ -1,6 +1,7 @@
 package com.bau_hornick.blackjack;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -68,46 +69,84 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         dealerImages.get(0).setImageResource(R.drawable.red_card_back);
         dealerImages.get(0).setVisibility(View.VISIBLE);
 
-        dealerImages.get(1).setImageResource(dealerHand.getDeck().get(1).getImage());
-        dealerImages.get(1).setVisibility(View.VISIBLE);
+        final Handler h = new Handler();
 
-        playerImages.get(0).setImageResource(playerHand.getDeck().get(0).getImage());
-        playerImages.get(0).setVisibility(View.VISIBLE);
+        Runnable r1 = new Runnable() {
 
-        playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
-        playerImages.get(1).setVisibility(View.VISIBLE);
+            @Override
+            public void run() {
+                // do first thing
 
-        TextView tv = (TextView) findViewById(R.id.bet_textView);
-        tv.setText(bet + "(" + (money - bet) + ")");
+                playerImages.get(0).setImageResource(playerHand.getDeck().get(0).getImage());
+                playerImages.get(0).setVisibility(View.VISIBLE);
 
-        tv = (TextView) findViewById(R.id.deck_count_textView);
-        tv.setText(String.valueOf(deck.getDeck().size()));
+           }
+        };
+        Runnable r2 = new Runnable() {
 
-        Button b = (Button) findViewById(R.id.hit_button);
-        b.setOnClickListener(this);
+            @Override
+            public void run() {
+                // do first thing
+                dealerImages.get(1).setImageResource(dealerHand.getDeck().get(1).getImage());
+                dealerImages.get(1).setVisibility(View.VISIBLE);
 
-        b = (Button) findViewById(R.id.stand_button);
-        b.setOnClickListener(this);
+            }
+        };
+        Runnable r3 = new Runnable() {
 
-        countScore();
+            @Override
+            public void run() {
+                // do first thing
 
-        if(playerScore == 21)
-        {
-            Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
-            startDealerActivity();
-        }
+                playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
+                playerImages.get(1).setVisibility(View.VISIBLE);
 
+                TextView tv = (TextView) findViewById(R.id.bet_textView);
+                tv.setText(bet + "(" + (money - bet) + ")");
+
+                tv = (TextView) findViewById(R.id.deck_count_textView);
+                tv.setText(String.valueOf(deck.getDeck().size()));
+
+                Button b = (Button) findViewById(R.id.hit_button);
+                b.setOnClickListener(PlayerActivity.this);
+
+                b = (Button) findViewById(R.id.stand_button);
+                b.setOnClickListener(PlayerActivity.this);
+
+                countScore();
+
+                if(playerScore == 21)
+                {
+                    Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                    startDealerActivity();
+                }
+
+
+            }
+        };
+        h.postDelayed(r1, 1000);
+        h.postDelayed(r2, 2000);
+        h.postDelayed(r3, 3000);
         }
 
         public void startDealerActivity()
         {
-            Intent intent=new Intent(this, DealerActivity.class);
-            intent.putExtra("playerHand", playerHand);
-            intent.putExtra("dealerHand", dealerHand);
-            intent.putExtra("bet",bet);
-            intent.putExtra("money",money);
-            intent.putExtra("deck",deck);
-            startActivity(intent);
+            final Handler h = new Handler();
+
+            Runnable r1 = new Runnable() {
+                @Override
+                public void run() {
+
+                Intent intent=new Intent(PlayerActivity.this, DealerActivity.class);
+                intent.putExtra("playerHand", playerHand);
+                intent.putExtra("dealerHand", dealerHand);
+                intent.putExtra("bet",bet);
+                intent.putExtra("money",money);
+                intent.putExtra("deck",deck);
+                startActivity(intent);
+                }
+            };
+            h.postDelayed(r1,2000);
         }
 
         public void countScore()
@@ -115,6 +154,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             playerScore = 0;
             for(int i = 0; i < playerHand.getDeck().size(); i++) {
                 playerScore += playerHand.getDeck().get(i).getValue();
+                if(playerScore>21){
+                    for(int j = 0; j < playerHand.getDeck().size(); j++){
+                        if(playerHand.getDeck().get(i).getValue()==11)
+                    playerScore-=10;
+                    }
+                }
             }
         }
 
@@ -130,23 +175,27 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                     playerImages.get(playerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
                     countScore();
 
-                    if(playerScore == 21)
-                    {
-                        Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                    if(playerHand.getDeck().size() == 5 && playerScore<21){
+
+                        Toast.makeText(getApplicationContext(), "You have reached the five card limit!", Toast.LENGTH_SHORT).show();
                         startDealerActivity();
                     }
+                    else if(playerScore == 21)
+                    {
+                        Toast.makeText(getApplicationContext(), "You have a natural!", Toast.LENGTH_SHORT).show(); //Already added sleep function
+                        startDealerActivity();
 
+                    }
                     else if(playerScore > 21)
                     {
-                        Toast.makeText(getApplicationContext(), "You have busted!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                        Toast.makeText(getApplicationContext(), "You scored "+playerScore+". You have busted!", Toast.LENGTH_SHORT).show(); //Already added sleep function
                         startDealerActivity();
                     }
-
                 }
-
             }
 
             else if(v.getId() == R.id.stand_button) {
+                Toast.makeText(getApplicationContext(), "You have a total score of "+playerScore, Toast.LENGTH_SHORT).show(); //Already added sleep function
                 startDealerActivity();
             }
 
