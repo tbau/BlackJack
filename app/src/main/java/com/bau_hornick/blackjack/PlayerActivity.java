@@ -77,20 +77,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
         playerImages.get(1).setVisibility(View.VISIBLE);
 
-
-
-        dealerImages.get(2).setImageResource(dealerHand.getDeck().get(2).getImage());
-        dealerImages.get(2).setVisibility(View.VISIBLE);
-
-        playerImages.get(2).setImageResource(playerHand.getDeck().get(2).getImage());
-        playerImages.get(2).setVisibility(View.VISIBLE);
-
-        dealerImages.get(3).setImageResource(dealerHand.getDeck().get(3).getImage());
-        dealerImages.get(3).setVisibility(View.VISIBLE);
-
-        playerImages.get(3).setImageResource(playerHand.getDeck().get(3).getImage());
-        playerImages.get(3).setVisibility(View.VISIBLE);
-
         TextView tv = (TextView) findViewById(R.id.bet_textView);
         tv.setText(bet + "(" + (money - bet) + ")");
 
@@ -103,14 +89,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         b = (Button) findViewById(R.id.stand_button);
         b.setOnClickListener(this);
 
-        for(int i = 0; i < playerHand.getDeck().size(); i++)
-        {
-            playerScore += playerHand.getDeck().get(i).getValue();
-        }
+        countScore();
 
         if(playerScore == 21)
         {
-            Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
             startDealerActivity();
         }
 
@@ -127,6 +110,15 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(intent);
         }
 
+        public void countScore()
+        {
+            playerScore = 0;
+            for(int i = 0; i < playerHand.getDeck().size(); i++) {
+                playerScore += playerHand.getDeck().get(i).getValue();
+            }
+        }
+
+
         @Override
         public void onClick(View v) {
             if(v.getId() == R.id.hit_button)
@@ -136,6 +128,20 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                     deck.getDeck().remove(deck.getDeck().size() - 1);
                     playerImages.get(playerHand.getDeck().size()-1).setImageResource(playerHand.getDeck().get(playerHand.getDeck().size()-1).getImage());
                     playerImages.get(playerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
+                    countScore();
+
+                    if(playerScore == 21)
+                    {
+                        Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                        startDealerActivity();
+                    }
+
+                    else if(playerScore > 21)
+                    {
+                        Toast.makeText(getApplicationContext(), "You have busted!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                        startDealerActivity();
+                    }
+
                 }
 
             }
