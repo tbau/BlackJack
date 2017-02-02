@@ -4,15 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements View.OnClickListener {
 
     int bet;
     int money;
+    int playerScore = 0;
     Deck deck;
     Deck playerHand;
     Deck dealerHand;
@@ -94,5 +97,52 @@ public class PlayerActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.deck_count_textView);
         tv.setText(String.valueOf(deck.getDeck().size()));
 
-    }
+        Button b = (Button) findViewById(R.id.hit_button);
+        b.setOnClickListener(this);
+
+        b = (Button) findViewById(R.id.stand_button);
+        b.setOnClickListener(this);
+
+        for(int i = 0; i < playerHand.getDeck().size(); i++)
+        {
+            playerScore += playerHand.getDeck().get(i).getValue();
+        }
+
+        if(playerScore == 21)
+        {
+            Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show();
+            startDealerActivity();
+        }
+
+        }
+
+        public void startDealerActivity()
+        {
+            Intent intent=new Intent(this, DealerActivity.class);
+            intent.putExtra("playerHand", playerHand);
+            intent.putExtra("dealerHand", dealerHand);
+            intent.putExtra("bet",bet);
+            intent.putExtra("money",money);
+            intent.putExtra("deck",deck);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == R.id.hit_button)
+            {
+                if(playerHand.getDeck().size() < 5) {
+                    playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size() - 1));
+                    deck.getDeck().remove(deck.getDeck().size() - 1);
+                    playerImages.get(playerHand.getDeck().size()-1).setImageResource(playerHand.getDeck().get(playerHand.getDeck().size()-1).getImage());
+                    playerImages.get(playerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            else if(v.getId() == R.id.stand_button) {
+                startDealerActivity();
+            }
+
+        }
 }
