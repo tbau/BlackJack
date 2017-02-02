@@ -112,20 +112,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
             deck.getDeck().remove(deck.getDeck().size()-1);
 
-//For testing
-            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-
             Intent intent = new Intent(getApplicationContext(),PlayerActivity.class);
             intent.putExtra("playerHand", playerHand);
             intent.putExtra("dealerHand", dealerHand);
