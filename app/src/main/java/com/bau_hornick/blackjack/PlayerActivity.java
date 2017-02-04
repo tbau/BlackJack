@@ -47,9 +47,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         //dealerImages =(ArrayList<ImageView>) intent.getSerializableExtra("dealerImages");
         //playerImages = (ArrayList<ImageView>) intent.getSerializableExtra("playerImages");
 
-        playerImages = new ArrayList<ImageView>();
-        dealerImages = new ArrayList<ImageView>();
-
         bet = intent.getIntExtra("bet",bet);
         money = intent.getIntExtra("money",money);
         deck = (Deck) intent.getSerializableExtra("deck");
@@ -66,67 +63,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         //Set 1 of dealer cards to the back card. Add to card class.
-        dealerImages.get(0).setImageResource(R.drawable.red_card_back);
-        dealerImages.get(0).setVisibility(View.VISIBLE);
-
-        final Handler h = new Handler();
-
-        Runnable r1 = new Runnable() {
-
-            @Override
-            public void run() {
-                // do first thing
-
-                playerImages.get(0).setImageResource(playerHand.getDeck().get(0).getImage());
-                playerImages.get(0).setVisibility(View.VISIBLE);
-
-           }
-        };
-        Runnable r2 = new Runnable() {
-
-            @Override
-            public void run() {
-                // do first thing
-                dealerImages.get(1).setImageResource(dealerHand.getDeck().get(1).getImage());
-                dealerImages.get(1).setVisibility(View.VISIBLE);
-
-            }
-        };
-        Runnable r3 = new Runnable() {
-
-            @Override
-            public void run() {
-                // do first thing
-
-                playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
-                playerImages.get(1).setVisibility(View.VISIBLE);
-
-                TextView tv = (TextView) findViewById(R.id.bet_textView);
-                tv.setText(bet + "(" + (money - bet) + ")");
-
-                tv = (TextView) findViewById(R.id.deck_count_textView);
-                tv.setText(String.valueOf(deck.getDeck().size()));
-
-                Button b = (Button) findViewById(R.id.hit_button);
-                b.setOnClickListener(PlayerActivity.this);
-
-                b = (Button) findViewById(R.id.stand_button);
-                b.setOnClickListener(PlayerActivity.this);
-
-                countScore();
-
-                if(playerScore == 21)
-                {
-                    Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
-                    startDealerActivity();
-                }
 
 
-            }
-        };
-        h.postDelayed(r1, 1000);
-        h.postDelayed(r2, 2000);
-        h.postDelayed(r3, 3000);
         }
 
         public void startDealerActivity()
