@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#DEDEDE"
     tools:context="com.bau_hornick.blackjack.MainActivity">
-  
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,11 +24,23 @@
         android:text="Play "
         android:layout_width="200dp"
         android:layout_height="75dp"
-        android:layout_marginTop="57dp"
         android:id="@+id/play_button"
-        android:layout_below="@+id/deck_imageView"
-        android:layout_centerHorizontal="true"
         android:background="#a30000"
         android:textColor="#fff"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="124dp" />
+
+    <Button
+        android:text="About"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:id="@+id/about_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_marginBottom="34dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/play_button" />
 </RelativeLayout>

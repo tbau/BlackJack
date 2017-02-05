@@ -37,10 +37,11 @@ public class Deck implements Serializable {
 
     public Deck(int fill) {
         deck = new ArrayList<Card>();
+        rand = new Random();
         if(fill==1){
             populate();
+            shuffle();
         }
-        rand = new Random();
     }
 
     public void shuffle() //shuffle deck
