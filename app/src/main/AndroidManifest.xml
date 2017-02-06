@@ -17,7 +17,6 @@
         </activity>
         <activity android:name=".DealerActivity" />
         <activity android:name=".PlayActivity" />
-        <activity android:name=".PlayerActivity" />
         <activity android:name=".AboutActivity"></activity>
     </application>
 

@@ -23,12 +23,24 @@
     <Button
         android:text="Play "
         android:layout_width="200dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="57dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="12dp"
         android:id="@+id/play_button"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
         android:background="#a30000"
         android:textColor="#fff"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="About"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:id="@+id/about_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_below="@+id/play_button"
+        android:layout_alignStart="@+id/play_button"
+        android:layout_marginTop="9dp" />
 </RelativeLayout>
