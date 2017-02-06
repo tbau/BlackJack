@@ -5,9 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     ArrayList<ImageView> playerImages;
     ArrayList<ImageView> dealerImages;
 
-    int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
+    int dealerImageViews[] = {R.id.dealer_card2_imageView, R.id.dealer_card2_imageView,
             R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
             R.id.dealer_card5_imageView};
     int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
