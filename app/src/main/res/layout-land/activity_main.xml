@@ -12,6 +12,17 @@
     android:background="#dedede"
     tools:context="com.bau_hornick.blackjack.MainActivity">
 
+    <Button
+        android:text="About"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:id="@+id/about_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="150dp"
@@ -20,18 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:text="Play "
-        android:layout_width="200dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="12dp"
-        android:id="@+id/play_button"
-        android:background="#a30000"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true" />
-
+   
     <Button
         android:text="About"
         android:layout_width="200dp"
@@ -43,4 +43,28 @@
         android:layout_below="@+id/play_button"
         android:layout_alignStart="@+id/play_button"
         android:layout_marginTop="9dp" />
+  
+  <Button
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:id="@+id/start_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Resume"
+        android:layout_width="wrap_content"
+        android:id="@+id/resume_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/about_button"
+        android:layout_marginEnd="127dp"
+        android:layout_alignTop="@+id/about_button" />
+
 </RelativeLayout>

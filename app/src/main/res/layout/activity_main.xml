@@ -12,35 +12,47 @@
     android:background="#DEDEDE"
     tools:context="com.bau_hornick.blackjack.MainActivity">
 
+    <Button
+        android:text="About"
+        android:layout_width="wrap_content"
+        android:id="@+id/about_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/start_button"
+        android:layout_alignStart="@+id/resume_button"
+        android:layout_height="60dp" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/blackjacklogo"
         android:id="@+id/deck_imageView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/resume_button"
+        android:layout_marginBottom="51dp" />
 
     <Button
-        android:text="Play "
-        android:layout_width="200dp"
-        android:layout_height="75dp"
-        android:id="@+id/play_button"
+        android:text="Resume"
+        android:layout_width="wrap_content"
+        android:id="@+id/resume_button"
         android:background="#a30000"
         android:textColor="#fff"
         android:textSize="18sp"
-        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/about_button"
+        android:layout_alignStart="@+id/start_button" />
+
+    <Button
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:id="@+id/start_button"
+        android:background="#a30000"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/resume_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="124dp" />
-
-    <Button
-        android:text="About"
-        android:layout_width="200dp"
-        android:layout_height="75dp"
-        android:id="@+id/about_button"
-        android:background="#a30000"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        android:layout_marginBottom="34dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/play_button" />
+        android:layout_marginBottom="15dp" />
 </RelativeLayout>

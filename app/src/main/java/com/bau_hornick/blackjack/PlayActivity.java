@@ -1,15 +1,25 @@
 package com.bau_hornick.blackjack;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,6 +32,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     int playerScore = 0;
     int dealerScore=0;
+
+    boolean hasBlackJack;
 
     ArrayList<ImageView> playerImages;
     ArrayList<ImageView> dealerImages;
@@ -62,35 +74,30 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         b = (Button) findViewById(R.id.stand_button);
         b.setOnClickListener(this);
 
-        if(deck!=null)
-        {
+        if(savedInstanceState!=null){
+            bet = savedInstanceState.getInt("bet");
+            money = savedInstanceState.getInt("money");
+            deck=(Deck)savedInstanceState.getSerializable("deck");
+            TextView tv = (TextView) findViewById(R.id.current_money_textView);
+            tv.setText(String.valueOf(money));
+            tv = (TextView) findViewById(R.id.bet_textView);
+            tv.setText(bet + "(" + (money - bet) + ")");
 
         }
-        else{
+        if(deck==null){
             deck=new Deck(1);
         }
-        if(playerHand!=null){
-
-        }else{
+        if(playerHand==null){
             playerHand=new Deck(0);
         }
 
-        if(dealerHand!=null) {
-
-        }
-        else{
+        if(dealerHand==null) {
             dealerHand = new Deck(0);
         }
-        if(playerImages!=null){
-
-        }else{
-
+        if(playerImages==null){
             playerImages = new ArrayList<ImageView>();
         }
-        if(dealerImages!=null){
-
-        }else{
-
+        if(dealerImages==null){
             dealerImages = new ArrayList<ImageView>();
         }
 
@@ -102,22 +109,22 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             ImageView playerImg = (ImageView) findViewById(playerImageViews[i]);
             playerImages.add(playerImg);
         }
-
-
+        Intent intent = getIntent();
+        if(intent.hasExtra("resume")){
+            if(intent.getBooleanExtra("resume",false)==true){
+                getFile();
+            }
+        }
         TextView tv = (TextView) findViewById(R.id.deck_count_textView);
         tv.setText(String.valueOf(deck.getDeck().size()));
 
+        tv = (TextView) findViewById(R.id.bet_textView);
+        tv.setText(bet + "(" + (money - bet) + ")");
+
+        tv = (TextView) findViewById(R.id.current_money_textView);
+        tv.setText(String.valueOf(money));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-        tv.setText(String.valueOf(deck.getDeck().size()));
-
-        dealerHand.getDeck().clear();
-        playerHand.getDeck().clear();
-    }
 
     @Override
     public void onClick(View v) {
@@ -141,24 +148,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 deck.reset();
             }
 
-//First two cards
-            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
-            playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-            deck.getDeck().remove(deck.getDeck().size()-1);
-
             state = STATE.PLAYER;
             checkPlayer();
         }else if(v.getId()==R.id.hit_button&&state==STATE.PLAYER) {
-            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-            tv.setText(String.valueOf(deck.getDeck().size()));
 
             if (playerHand.getDeck().size() < 5) {
                 playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size() - 1));
@@ -167,8 +159,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 playerImages.get(playerHand.getDeck().size() - 1).setImageResource(playerHand.getDeck().get(playerHand.getDeck().size() - 1).getImage());
                 playerImages.get(playerHand.getDeck().size() - 1).setVisibility(View.VISIBLE);
                 countPlayerScore();
+                TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                tv.setText(String.valueOf(deck.getDeck().size()));
 
-                    if (playerHand.getDeck().size() == 5 && playerScore < 21) {
+                if (playerHand.getDeck().size() == 5 && playerScore < 21) {
 
                     Toast.makeText(getApplicationContext(), "You have reached the five card limit!", Toast.LENGTH_SHORT).show();
 
@@ -218,17 +212,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             betView.setText(bet + "(" + (money - bet) + ")");
             betView = (TextView) findViewById(R.id.current_money_textView);
             betView.setText(String.valueOf(money));
+
+            writeToFile();
         }
     }
     public void checkPlayer(){
 
         if(state==STATE.PLAYER){
             playerScore=0;
-            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-            tv.setText(String.valueOf(deck.getDeck().size()));
+            hasBlackJack=false;
+
+            //First two cards
+            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+            deck.getDeck().remove(deck.getDeck().size()-1);
 
             dealerImages.get(0).setImageResource(R.drawable.red_card_back);
             dealerImages.get(0).setVisibility(View.VISIBLE);
+
+            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+            tv.setText(String.valueOf(deck.getDeck().size()));
 
             tv = (TextView) findViewById(R.id.bet_textView);
             tv.setText(bet + "(" + (money - bet) + ")");
@@ -241,8 +243,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     // do first thing
 
+                    playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+                    deck.getDeck().remove(deck.getDeck().size()-1);
+
                     playerImages.get(0).setImageResource(playerHand.getDeck().get(0).getImage());
                     playerImages.get(0).setVisibility(View.VISIBLE);
+
+                    TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                    tv.setText(String.valueOf(deck.getDeck().size()));
 
                 }
             };
@@ -251,8 +259,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     // do first thing
+
+                    dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+                    deck.getDeck().remove(deck.getDeck().size()-1);
+
                     dealerImages.get(1).setImageResource(dealerHand.getDeck().get(1).getImage());
                     dealerImages.get(1).setVisibility(View.VISIBLE);
+
+                    TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                    tv.setText(String.valueOf(deck.getDeck().size()));
 
                 }
             };
@@ -262,13 +277,21 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     // do first thing
 
+
+                    playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+                    deck.getDeck().remove(deck.getDeck().size()-1);
+
                     playerImages.get(1).setImageResource(playerHand.getDeck().get(1).getImage());
                     playerImages.get(1).setVisibility(View.VISIBLE);
+
+                    TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                    tv.setText(String.valueOf(deck.getDeck().size()));
 
                     countPlayerScore();
 
                     if(playerScore == 21)
                     {
+                        hasBlackJack=true;
                         outputMessage(OutputContext.BLACKJACK,0,STATE.DEALER,"DEALER");
                     }
 
@@ -284,6 +307,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         if(state==STATE.DEALER){
             countDealerScore();
             countPlayerScore();
+            pause=1000;
 
            final Handler h = new Handler();
 
@@ -300,6 +324,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                        else{
                            outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
                        }}
+                   else if(hasBlackJack){
+                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                   }
                    else if(dealerScore<21&&dealerScore>=17){
                        if(dealerScore==playerScore){
                            outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
@@ -318,21 +345,29 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
                            tv.setText(String.valueOf(deck.getDeck().size()));
 
-
                            dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
                            dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
 
+
                            countDealerScore();
                        }
-                       if(dealerScore==playerScore&&dealerScore!=21){
-                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
-                       }
-                       else if(dealerScore>playerScore&&dealerScore<=21){
-                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
-                       }
-                       else{
-                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
-                       }
+                       Runnable r2 = new Runnable() {
+                           @Override
+                           public void run() {
+                               if(dealerScore==playerScore){
+                                   outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+
+                               }
+                               else if(dealerScore>playerScore&&dealerScore<=21){
+                                   outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                               }
+                               else{
+                                   outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                               }
+                           }
+                       };
+                       h.postDelayed(r2,1000);
+
                    }
                }
 
@@ -343,33 +378,48 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     public void countDealerScore(){
 
+        int numOfAces=0;
         dealerScore = 0;
+
         for(int i = 0; i < dealerHand.getDeck().size(); i++) {
             dealerScore += dealerHand.getDeck().get(i).getValue();
-            if(dealerScore>21){
-                for(int j = 0; j < dealerHand.getDeck().size(); j++){
-                    if(dealerHand.getDeck().get(i).getValue()==11) {
-                        dealerScore -= 10;
-                        break;
-                    }
+
+        }
+        if(dealerScore>21){
+            for(int j = 0; j < dealerHand.getDeck().size(); j++){
+                if(dealerHand.getDeck().get(j).getValue()==11)
+                {
+                    numOfAces++;
                 }
+            }
+            while(numOfAces>0&&dealerScore>21){
+                dealerScore-=10;
+                numOfAces--;
             }
         }
     }
     public void countPlayerScore()
     {
+        int numOfAces=0;
+
         playerScore = 0;
         for(int i = 0; i < playerHand.getDeck().size(); i++) {
             playerScore += playerHand.getDeck().get(i).getValue();
-            if(playerScore>21){
-                for(int j = 0; j < playerHand.getDeck().size(); j++){
-                    if(playerHand.getDeck().get(i).getValue()==11)
-                    {playerScore-=10;
-                        break;
-                 }
-            }
+
         }
-    }}
+        if(playerScore>21){
+            for(int j = 0; j < playerHand.getDeck().size(); j++){
+                if(playerHand.getDeck().get(j).getValue()==11)
+                {
+                numOfAces++;
+                }
+            }
+        while(numOfAces>0&&playerScore>21){
+            playerScore-=10;
+            numOfAces--;
+        }
+        }
+    }
     public void outputMessage(OutputContext context, final int amount, final STATE mystate, final String startNext){
 
 
@@ -416,6 +466,71 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                     checkDealer();
             }
         };
-        h.postDelayed(r1,4000);
+        h.postDelayed(r1,3000);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putInt("bet",bet);
+        outState.putInt("money",money);
+        outState.putSerializable("deck",deck);
+
+        super.onSaveInstanceState(outState);
+
+    }
+    protected void getFile(){
+
+        try {
+            FileInputStream fis = openFileInput("blackjack.txt");
+            Scanner s = new Scanner(fis);
+
+            money = s.nextInt();
+            bet=s.nextInt();
+            int deckSize=s.nextInt();
+            deck.getDeck().clear();
+
+            while(s.hasNext()){
+
+                // File there is still stuff to read
+
+                Card temp=new Card(0,0,"",false);
+                temp.setImage(s.nextInt());
+                temp.setValue(s.nextInt());
+                temp.setSuit(s.next());
+                temp.setVisible(s.nextBoolean());
+
+                deck.getDeck().add(temp);             // Puts the Card into my list
+            }
+            s.close();
+
+        } catch (FileNotFoundException e) {
+            Log.i("ReadData", "no input file found");
+        }
+    }
+    protected void writeToFile(){
+        try {
+            FileOutputStream fos = openFileOutput("blackjack.txt", Context.MODE_PRIVATE);     // Setup writing to file
+
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter bw = new BufferedWriter(osw);
+            PrintWriter pw = new PrintWriter(bw);
+
+            pw.println(money);
+            pw.println(bet);
+            pw.println(deck.getDeck().size());
+            for(int i=0;i<deck.getDeck().size();i++)           // Writes Notes to file
+            {
+                pw.println(deck.getDeck().get(i).getImage());
+                pw.println(deck.getDeck().get(i).getValue());
+                pw.println(deck.getDeck().get(i).getSuit());
+                pw.println(deck.getDeck().get(i).isVisible());
+            }
+            pw.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this,"Can't write to file", Toast.LENGTH_LONG).show();
+        }
     }
 }
