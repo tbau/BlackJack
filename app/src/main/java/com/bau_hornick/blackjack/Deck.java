@@ -65,6 +65,7 @@ public class Deck implements Serializable {
 
         deck.clear();
         populate();
+        shuffle();
     }
 
     public void populate(){
