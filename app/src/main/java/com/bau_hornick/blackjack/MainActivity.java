@@ -27,26 +27,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);}
 
         else if(v.getId()==R.id.about_button){
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
 
-            String message = "<html><body>"
-                            +"<h2>About BlackJack</h2>"
-                            +"<p>Image Credits</p>"
-                            +"<p><b>Source: </b>nicubunu<br>"
-                            +"<b>Creator:</b> Nicu Buculei<br>"
-                            +"<b>Link: <a href='https://openclipart.org/search/?query=white%20deck&page=2'>"
-                            +"https://openclipart.org/search/?query=white%20deck&page=2</a></b><br>"
-                            +"<b>License:</b> CC BY 3.0"
-                            +"</p></body></html>";
+            // AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            //builder.setMessage(Html.fromHtml(message));
+            //builder.setPositiveButton("OK",null);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-            builder.setMessage(Html.fromHtml(message));
-            builder.setPositiveButton("OK",null);
+            //AlertDialog dialog = builder.create();
+            //dialog.show();
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            TextView tv = (TextView) dialog.findViewById(android.R.id.message);
-            tv.setMovementMethod(LinkMovementMethod.getInstance());
+            //TextView tv = (TextView) dialog.findViewById(android.R.id.message);
+            //tv.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
     }
