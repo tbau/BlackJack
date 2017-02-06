@@ -40,10 +40,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
             R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
-            R.id.dealer_card5_imageView};
+            R.id.dealer_card5_imageView, R.id.dealer_card6_imageView,
+            R.id.dealer_card7_imageView, R.id.dealer_card8_imageView};
     int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
             R.id.player_card3_imageView,R.id.player_card4_imageView,
-            R.id.player_card5_imageView};
+            R.id.player_card5_imageView, R.id.player_card6_imageView, R.id.player_card7_imageView,
+            R.id.player_card8_imageView};
 
 
     enum STATE{BEFORE, PLAYER,DEALER};
