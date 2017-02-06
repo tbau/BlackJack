@@ -38,6 +38,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     enum STATE{BEFORE, PLAYER,DEALER};
     STATE state=STATE.BEFORE;
 
+    enum OutputContext{TIE,DEALER,PLAYER,STAND,BUSTED,NATURAL,BLACKJACK};
 
     int pause=1000;
     @Override
@@ -155,6 +156,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             state = STATE.PLAYER;
             checkPlayer();
         }else if(v.getId()==R.id.hit_button&&state==STATE.PLAYER) {
+            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+            tv.setText(String.valueOf(deck.getDeck().size()));
 
             if (playerHand.getDeck().size() < 5) {
                 playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size() - 1));
@@ -177,30 +180,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                     };
                     h.postDelayed(r1, 1000);
                 } else if (playerScore == 21) {
-                    Toast.makeText(getApplicationContext(), "You have a natural!", Toast.LENGTH_SHORT).show(); //Already added sleep function
-
-                    Runnable r1 = new Runnable() {
-                        @Override
-                        public void run() {
-                            state = STATE.DEALER;
-                            checkDealer();
-                        }
-                    };
-
-                    h.postDelayed(r1, 1000);
+                        outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
                 } else if (playerScore > 21) {
-                    Toast.makeText(getApplicationContext(), "You scored " + playerScore + ". You have busted!", Toast.LENGTH_SHORT).show(); //Already added sleep function
-
-                    Runnable r1 = new Runnable() {
-                        @Override
-                        public void run() {
-                            state = STATE.BEFORE;
-                            money -= bet;
-                            checkBefore();
-                        }
-                    };
-
-                    h.postDelayed(r1, 1000);
+                        outputMessage(OutputContext.BUSTED,-bet,STATE.BEFORE,"BEFORE");
 
                 }
             } }else if (v.getId() == R.id.stand_button && state == STATE.PLAYER) {
@@ -208,29 +190,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 countPlayerScore();
 
                 if (playerScore == 21) {
-                    Toast.makeText(getApplicationContext(), "You have a natural!", Toast.LENGTH_SHORT).show(); //Already added sleep function
-
-                    Runnable r1 = new Runnable() {
-                       @Override
-                       public void run() {
-                           state = STATE.DEALER;
-                           checkDealer();
-                       }
-                   };
-                    h.postDelayed(r1,1000);
-
-
+                    outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
                 } else {
-                    Toast.makeText(getApplicationContext(), "You scored " + playerScore, Toast.LENGTH_SHORT).show(); //Already added sleep function
-
-                    Runnable r1 = new Runnable() {
-                        @Override
-                        public void run() {
-                            state = STATE.DEALER;
-                            checkDealer();
-                        }
-                    };
-                    h.postDelayed(r1,1000);
+                    outputMessage(OutputContext.STAND,0,STATE.DEALER,"DEALER");
                }
             }
         }
@@ -306,9 +268,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(playerScore == 21)
                     {
-                        Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
-                        state=STATE.DEALER;
-                        checkDealer();
+                        outputMessage(OutputContext.BLACKJACK,0,STATE.DEALER,"DEALER");
                     }
 
                 }
@@ -322,173 +282,63 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     public void checkDealer(){
         if(state==STATE.DEALER){
             countDealerScore();
+            countPlayerScore();
 
-            final Handler h = new Handler();
+           final Handler h = new Handler();
 
-            dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
+           dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
 
-            if(dealerScore == 21)
-            {
-                Toast.makeText(getApplicationContext(), "Tie, you have a push!", Toast.LENGTH_SHORT).show(); //add a sleep function
+           Runnable r1 = new Runnable() {
+               @Override
+               public void run() {
+                   if(dealerScore == 21)
+                   {
+                       if(playerScore==21)
+                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
 
-                if(playerScore==21) {
-                    Runnable r1 = new Runnable() {
+                       else{
+                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                       }}
+                   else if(dealerScore<21&&dealerScore>=17){
+                       if(dealerScore==playerScore){
+                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+                       }
+                       else if(dealerScore>playerScore){
+                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                       }
+                       else{
+                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                       }
+                   }else{
+                       while(dealerScore<17){
+                           dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+                           deck.getDeck().remove(deck.getDeck().size()-1);
 
-                        @Override
-                        public void run() {
-                            // do first thing
-                            state = STATE.BEFORE;
-                            checkBefore();
-
-                        }
-                    };
-                    h.postDelayed(r1, pause);
-                    pause += 1000;
-                }
-                else{
-
-                    Toast.makeText(getApplicationContext(), "Dealer Wins!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            state=STATE.BEFORE;
-                            money-=bet;
-                            checkBefore();
-
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                  }
-            }
-            else if(dealerScore<21&&dealerScore>=17){
-                if(dealerScore==playerScore){
-                    Toast.makeText(getApplicationContext(), "Tie, you have a push!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            state=STATE.BEFORE;
-                            checkBefore();
-
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-                else if(dealerScore>playerScore){
-                    Toast.makeText(getApplicationContext(), "Dealer Wins!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            money-=bet;
-                            state=STATE.BEFORE;
-                            checkBefore();
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "You Win!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            money+=bet;
-                            state=STATE.BEFORE;
-                            checkBefore();
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-            }else{
-                while(dealerScore<17){
-                    dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-                    deck.getDeck().remove(deck.getDeck().size()-1);
-
-                    TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-                    tv.setText(String.valueOf(deck.getDeck().size()));
+                           TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                           tv.setText(String.valueOf(deck.getDeck().size()));
 
 
-                    Runnable r1 = new Runnable() {
+                           dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
+                           dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
 
-                        @Override
-                        public void run() {
-                            // do first thing
+                           countDealerScore();
+                       }
+                       if(dealerScore==playerScore&&dealerScore!=21){
+                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+                       }
+                       else if(dealerScore>playerScore&&dealerScore<=21){
+                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                       }
+                       else{
+                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                       }
+                   }
+               }
 
-                            dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
-                            dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
+           };
+            h.postDelayed(r1,1000);
 
-                        }
-                    };
-
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                    dealerScore+=dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getValue();
-                }
-                if(dealerScore==playerScore&&dealerScore!=21){
-                    Toast.makeText(getApplicationContext(), "Tie, you have a push!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            state=STATE.BEFORE;
-                            checkBefore();
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-                else if(dealerScore>playerScore){
-                    Toast.makeText(getApplicationContext(), "Dealer Wins!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-                            money-=bet;
-                            state=STATE.BEFORE;
-                            checkBefore();
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "You Win!", Toast.LENGTH_SHORT).show(); //add a sleep function
-
-                    Runnable r1 = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // do first thing
-
-                            money+=bet;
-                            state=STATE.BEFORE;
-                            checkBefore();
-                        }
-                    };
-                    h.postDelayed(r1,pause);
-                    pause+=1000;
-                }
-            }
-        }
-    }
+    }}
 
     public void countDealerScore(){
 
@@ -497,8 +347,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             dealerScore += dealerHand.getDeck().get(i).getValue();
             if(dealerScore>21){
                 for(int j = 0; j < dealerHand.getDeck().size(); j++){
-                    if(dealerHand.getDeck().get(i).getValue()==11)
-                       dealerScore-=10;
+                    if(dealerHand.getDeck().get(i).getValue()==11) {
+                        dealerScore -= 10;
+                        break;
+                    }
                 }
             }
         }
@@ -511,13 +363,58 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             if(playerScore>21){
                 for(int j = 0; j < playerHand.getDeck().size(); j++){
                     if(playerHand.getDeck().get(i).getValue()==11)
-                        playerScore-=10;
-                }
+                    {playerScore-=10;
+                        break;
+                 }
             }
         }
-    }
-    public void outputMessage(int context, int amount, String myState,String startNext){
+    }}
+    public void outputMessage(OutputContext context, final int amount, final STATE mystate, final String startNext){
 
-      //  if()
+
+        if(context.equals(OutputContext.DEALER)){ //Dealer Wins
+            Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". Dealer Wins!", Toast.LENGTH_SHORT).show(); //add a sleep function
+        }
+        else if(context.equals(OutputContext.PLAYER)){ //You Win
+            if(dealerScore>21)
+            Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". Dealer Busted!", Toast.LENGTH_SHORT).show(); //add a sleep function
+            else
+            Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". You Win!", Toast.LENGTH_SHORT).show(); //add a sleep function
+        }
+        else if(context.equals(OutputContext.TIE)){ //Tie
+            Toast.makeText(getApplicationContext(), "Tie, you have a push!", Toast.LENGTH_SHORT).show();
+        }
+        else if(context.equals(OutputContext.STAND)){ //Stand
+            Toast.makeText(getApplicationContext(), "You scored " + playerScore, Toast.LENGTH_SHORT).show(); //Already added sleep function
+
+        }
+        else if(context.equals(OutputContext.BUSTED)){ //Busted
+            Toast.makeText(getApplicationContext(), "You scored " + playerScore + ". You have busted!", Toast.LENGTH_SHORT).show(); //Already added sleep function
+
+        }
+        else if(context.equals(OutputContext.NATURAL)){ //Natural
+            Toast.makeText(getApplicationContext(), "You have a natural!", Toast.LENGTH_SHORT).show(); //Already added sleep function
+        }
+        else if(context.equals(OutputContext.BLACKJACK)) { //BlackJack
+            Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show(); //add a sleep function
+        }
+
+        final Handler h=new Handler();
+        Runnable r1 = new Runnable() {
+
+            @Override
+            public void run() {
+                // do first thing
+               money+=amount;
+               state=mystate;
+               if(startNext.equals("BEFORE"))
+                    checkBefore();
+               else if(startNext.equals("PLAYER"))
+                    checkPlayer();
+               else
+                    checkDealer();
+            }
+        };
+        h.postDelayed(r1,4000);
     }
 }
