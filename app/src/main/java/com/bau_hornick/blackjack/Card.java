@@ -12,10 +12,27 @@ public class Card implements Serializable {
     private String suit;
     private boolean visible;
 
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setSuit(String suit) {
+        this.suit = suit;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
     public Card(int image, int value, String suit, boolean visible) {
         this.image = image;
         this.value = value;
         this.suit = suit;
+
         this.visible=true;
     }
 
