@@ -292,8 +292,8 @@
         android:id="@+id/dealer_card7_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:layout_alignTop="@+id/dealer_card9_imageView"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/dealer_card3_imageView"
+        android:layout_toEndOf="@+id/dealer_card3_imageView" />
 
     <ImageView
         android:layout_width="120dp"

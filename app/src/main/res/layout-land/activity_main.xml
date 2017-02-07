@@ -29,7 +29,7 @@
         app:srcCompat="@drawable/blackjacklogo"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:text="Play "
@@ -50,8 +50,8 @@
         android:textColor="#fff"
         android:textSize="18sp"
         android:layout_height="60dp"
+        android:layout_marginEnd="127dp"
         android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/about_button"
-        android:layout_marginEnd="127dp"
         android:layout_alignTop="@+id/about_button" />
 </RelativeLayout>

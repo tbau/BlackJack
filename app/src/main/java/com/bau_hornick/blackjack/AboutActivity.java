@@ -25,7 +25,7 @@ public class AboutActivity extends AppCompatActivity {
                 +"<b>License:</b> CC BY 3.0"
                 +"</p><br>"
                 +"BlackJack Logo Made with <a href=\"http://logomakr.com\" title=\"Logo Maker\">Logo Maker</a>"
-                +"<p>Developers: Thomas Bau and Alex Hornick</p>"
+                +"<p><b>Developers:</b> Thomas Bau and Alex Hornick</p>"
                 + "</body></html>";
 
         //Set WebView to contain HTML above
