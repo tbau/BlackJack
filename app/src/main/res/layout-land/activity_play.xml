@@ -283,17 +283,6 @@
         android:layout_alignTop="@+id/player_card9_imageView"
         android:layout_alignStart="@+id/start_button" />
 
-    <Button
-        android:text="Stand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stand_button"
-        android:background="#ff4c4c"
-        android:textColor="#fff"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/dealer_card_10_imageView-"
-        android:layout_marginStart="11dp" />
-
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
@@ -334,5 +323,15 @@
         android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dealer_card10_imageView" />
+
+    <Button
+        android:text="Stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stand_button"
+        android:background="#ff4c4c"
+        android:textColor="#fff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
