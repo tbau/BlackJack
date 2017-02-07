@@ -38,12 +38,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<ImageView> playerImages;
     ArrayList<ImageView> dealerImages;
 
-    int dealerImageViews[] = {R.id.dealer_card1_imageView,R.id.dealer_card2_imageView,R.id.dealer_card3_imageView,
-            R.id.dealer_card4_imageView,R.id.dealer_card5_imageView,R.id.dealer_card6_imageView,R.id.dealer_card7_imageView,
-            R.id.dealer_card8_imageView,R.id.dealer_card8_imageView,R.id.dealer_card9_imageView,R.id.dealer_card10_imageView};
-    int playerImageViews[] = {R.id.player_card1_imageView,R.id.player_card2_imageView,R.id.player_card3_imageView,R.id.player_card4_imageView,
-            R.id.player_card5_imageView,R.id.player_card6_imageView,R.id.player_card7_imageView,R.id.player_card8_imageView,
-            R.id.player_card9_imageView,R.id.player_card10_imageView};
+    int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
+            R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
+            R.id.dealer_card5_imageView, R.id.dealer_card6_imageView,
+            R.id.dealer_card7_imageView, R.id.dealer_card8_imageView,
+            R.id.dealer_card9_imageView, R.id.dealer_card10_imageView};
+    int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
+            R.id.player_card3_imageView,R.id.player_card4_imageView,
+            R.id.player_card5_imageView, R.id.player_card6_imageView, R.id.player_card7_imageView,
+            R.id.player_card8_imageView, R.id.player_card9_imageView, R.id.player_card10_imageView};
 
 
     enum STATE{BEFORE, PLAYER,DEALER};
