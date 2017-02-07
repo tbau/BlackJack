@@ -144,10 +144,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             betView.setText(bet + "(" + (money - bet) + ")");
         } else if (v.getId() == R.id.start_button && state==STATE.BEFORE){
 
-            if(deck.getDeck().size()<=10)
+            int totalValues=0;
+            for(int i=0;i<deck.getDeck().size();i++){
+            if(deck.getDeck().get(i).getValue()==11)
             {
-                deck.reset();
+                totalValues+=1;
             }
+            else
+                totalValues+=deck.getDeck().get(i).getValue();
+            }
+
+            if(totalValues<=50)
+                deck.reset();
 
             state = STATE.PLAYER;
             checkPlayer();
