@@ -52,7 +52,7 @@
         android:textColor="#fff"
         android:textSize="18sp"
         android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="12dp"
         android:layout_above="@+id/resume_button"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
