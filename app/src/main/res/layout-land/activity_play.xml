@@ -121,7 +121,7 @@
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/player_card9_imageView"
+        android:id="@+id/player_card1_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
         android:layout_alignParentBottom="true"

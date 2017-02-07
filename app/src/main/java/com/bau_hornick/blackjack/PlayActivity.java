@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,51 +21,127 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
 
-    int bet=1;
-    int money = 100;
+    private int bet=1;
+    private int money = 100;
+    private boolean betIncrease=false;
+    private boolean betDecrease=false;
 
-    Deck deck;
-    Deck playerHand;
-    Deck dealerHand;
+    private Deck deck;
+    private Deck playerHand;
+    private Deck dealerHand;
 
-    int playerScore = 0;
-    int dealerScore=0;
+    private int playerScore = 0;
+    private int dealerScore=0;
 
-    boolean hasBlackJack;
+    private boolean hasBlackJack;
 
-    ArrayList<ImageView> playerImages;
-    ArrayList<ImageView> dealerImages;
+    private ArrayList<ImageView> playerImages;
+    private ArrayList<ImageView> dealerImages;
 
-    int dealerImageViews[] = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
+    private int[] dealerImageViews = {R.id.dealer_card1_imageView, R.id.dealer_card2_imageView,
             R.id.dealer_card3_imageView, R.id.dealer_card4_imageView,
             R.id.dealer_card5_imageView, R.id.dealer_card6_imageView,
             R.id.dealer_card7_imageView, R.id.dealer_card8_imageView,
             R.id.dealer_card9_imageView, R.id.dealer_card10_imageView};
-    int playerImageViews[] = {R.id.player_card1_imageView, R.id.player_card2_imageView,
+    private int[] playerImageViews = {R.id.player_card1_imageView, R.id.player_card2_imageView,
             R.id.player_card3_imageView,R.id.player_card4_imageView,
             R.id.player_card5_imageView, R.id.player_card6_imageView, R.id.player_card7_imageView,
             R.id.player_card8_imageView, R.id.player_card9_imageView, R.id.player_card10_imageView};
 
 
     enum STATE{BEFORE, PLAYER,DEALER};
-    STATE state=STATE.BEFORE;
+    private STATE state=STATE.BEFORE;
 
     enum OutputContext{TIE,DEALER,PLAYER,STAND,BUSTED,NATURAL,BLACKJACK};
 
-    int pause=1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
         Button b = (Button) findViewById(R.id.increase_bet_button);
-        b.setOnClickListener(this);
+        b.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        betIncrease=true;
+                        return true;
+                    }
+
+                    case MotionEvent.ACTION_UP:
+                    {
+                        betIncrease=false;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         b = (Button) findViewById(R.id.decrease_bet_button);
-        b.setOnClickListener(this);
+        b.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        betDecrease=true;
+                        return true;
+                    }
+
+                    case MotionEvent.ACTION_UP:
+                    {
+                        betDecrease=false;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (state == STATE.BEFORE&&betDecrease) {
+                    bet--;
+                    if (bet < 1&&money!=0)
+                        bet++;
+                    final TextView tv = (TextView) findViewById(R.id.bet_textView);
+                    tv.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv.setText(bet + "(" + (money - bet) + ")");
+                        }
+                    });
+                }}}, 0, 100);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (state==STATE.BEFORE&&betIncrease) {
+                    bet++;
+                    if(bet>money)
+                        bet=money;
+                    final TextView betView = (TextView) findViewById(R.id.bet_textView);
+                    betView.post(new Runnable() {
+                         @Override
+                         public void run() {
+                                   betView.setText(bet + "(" + (money - bet) + ")");
+                         }
+                         }
+                    );
+                }}
+
+        },0,100);
 
         b = (Button) findViewById(R.id.start_button);
         b.setOnClickListener(this);
@@ -128,32 +205,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         tv.setText(String.valueOf(money));
     }
 
-
     @Override
     public void onClick(View v) {
         final Handler h = new Handler();
-        if (v.getId() == R.id.decrease_bet_button && state == STATE.BEFORE) {
-            bet--;
-            if(bet<1)
-                bet++;
-            TextView tv = (TextView) findViewById(R.id.bet_textView);
-            tv.setText(bet + "(" + (money - bet) + ")");
-        } else if (v.getId() == R.id.increase_bet_button && state==STATE.BEFORE) {
-            bet++;
-            if(bet>money)
-                bet--;
-            TextView betView = (TextView) findViewById(R.id.bet_textView);
-            betView.setText(bet + "(" + (money - bet) + ")");
-        } else if (v.getId() == R.id.start_button && state==STATE.BEFORE){
+        if (v.getId() == R.id.start_button && state==STATE.BEFORE){
 
             int totalValues=0;
             for(int i=0;i<deck.getDeck().size();i++){
-            if(deck.getDeck().get(i).getValue()==11)
-            {
-                totalValues+=1;
-            }
-            else
-                totalValues+=deck.getDeck().get(i).getValue();
+                if(deck.getDeck().get(i).getValue()==11)
+                {
+                    totalValues+=1;
+                }
+                else
+                    totalValues+=deck.getDeck().get(i).getValue();
             }
 
             if(totalValues<=50)
@@ -186,22 +250,22 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                     };
                     h.postDelayed(r1, 1000);
                 } else if (playerScore == 21) {
-                        outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
+                    outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
                 } else if (playerScore > 21) {
-                        outputMessage(OutputContext.BUSTED,-bet,STATE.BEFORE,"BEFORE");
+                    outputMessage(OutputContext.BUSTED,-bet,STATE.BEFORE,"BEFORE");
 
                 }
             } }else if (v.getId() == R.id.stand_button && state == STATE.PLAYER) {
 
-                countPlayerScore();
+            countPlayerScore();
 
-                if (playerScore == 21) {
-                    outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
-                } else {
-                    outputMessage(OutputContext.STAND,0,STATE.DEALER,"DEALER");
-               }
+            if (playerScore == 21) {
+                outputMessage(OutputContext.NATURAL,0,STATE.DEALER,"DEALER");
+            } else {
+                outputMessage(OutputContext.STAND,0,STATE.DEALER,"DEALER");
             }
         }
+    }
 
     public void checkBefore(){
         if(state==STATE.BEFORE){
@@ -223,6 +287,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             betView.setText(bet + "(" + (money - bet) + ")");
             betView = (TextView) findViewById(R.id.current_money_textView);
             betView.setText(String.valueOf(money));
+
+            if(bet>money)
+                bet=money;
+            if(money==0){
+                Toast.makeText(getApplicationContext(),"You are out of money! Here is 100 to bet with",Toast.LENGTH_LONG).show();
+                money=100;
+                betView.setText(String.valueOf(money));
+            }
 
             writeToFile();
         }
@@ -318,74 +390,73 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         if(state==STATE.DEALER){
             countDealerScore();
             countPlayerScore();
-            pause=1000;
 
-           final Handler h = new Handler();
+            final Handler h = new Handler();
 
-           dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
+            dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
 
-           Runnable r1 = new Runnable() {
-               @Override
-               public void run() {
-                   if(dealerScore == 21)
-                   {
-                       if(playerScore==21)
-                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+            Runnable r1 = new Runnable() {
+                @Override
+                public void run() {
+                    if(dealerScore == 21)
+                    {
+                        if(playerScore==21)
+                            outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
 
-                       else{
-                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
-                       }}
-                   else if(hasBlackJack){
-                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
-                   }
-                   else if(dealerScore<21&&dealerScore>=17){
-                       if(dealerScore==playerScore){
-                           outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
-                       }
-                       else if(dealerScore>playerScore){
-                           outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
-                       }
-                       else{
-                           outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
-                       }
-                   }else{
-                       while(dealerScore<17&&dealerHand.getDeck().size()<10){
-                           dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-                           deck.getDeck().remove(deck.getDeck().size()-1);
+                        else{
+                            outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                        }}
+                    else if(hasBlackJack){
+                        outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                    }
+                    else if(dealerScore<21&&dealerScore>=17){
+                        if(dealerScore==playerScore){
+                            outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+                        }
+                        else if(dealerScore>playerScore){
+                            outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                        }
+                        else{
+                            outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                        }
+                    }else{
+                        while(dealerScore<17&&dealerHand.getDeck().size()<10){
+                            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
+                            deck.getDeck().remove(deck.getDeck().size()-1);
 
-                           TextView tv = (TextView) findViewById(R.id.deck_count_textView);
-                           tv.setText(String.valueOf(deck.getDeck().size()));
+                            TextView tv = (TextView) findViewById(R.id.deck_count_textView);
+                            tv.setText(String.valueOf(deck.getDeck().size()));
 
-                           dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
-                           dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
+                            dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
+                            dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
 
 
-                           countDealerScore();
-                       }
-                       Runnable r2 = new Runnable() {
-                           @Override
-                           public void run() {
-                               if(dealerScore==playerScore){
-                                   outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
+                            countDealerScore();
+                        }
+                        Runnable r2 = new Runnable() {
+                            @Override
+                            public void run() {
+                                if(dealerScore==playerScore){
+                                    outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
 
-                               }
-                               else if(dealerScore>playerScore&&dealerScore<=21){
-                                   outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
-                               }
-                               else{
-                                   outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
-                               }
-                           }
-                       };
-                       h.postDelayed(r2,1000);
+                                }
+                                else if(dealerScore>playerScore&&dealerScore<=21){
+                                    outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
+                                }
+                                else{
+                                    outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
+                                }
+                            }
+                        };
+                        h.postDelayed(r2,1000);
 
-                   }
-               }
+                    }
+                }
 
-           };
+            };
             h.postDelayed(r1,1000);
 
-    }}
+        }}
 
     public void countDealerScore(){
 
@@ -422,13 +493,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             for(int j = 0; j < playerHand.getDeck().size(); j++){
                 if(playerHand.getDeck().get(j).getValue()==11)
                 {
-                numOfAces++;
+                    numOfAces++;
                 }
             }
-        while(numOfAces>0&&playerScore>21){
-            playerScore-=10;
-            numOfAces--;
-        }
+            while(numOfAces>0&&playerScore>21){
+                playerScore-=10;
+                numOfAces--;
+            }
         }
     }
     public void outputMessage(OutputContext context, final int amount, final STATE mystate, final String startNext){
@@ -439,9 +510,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(context.equals(OutputContext.PLAYER)){ //You Win
             if(dealerScore>21)
-            Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". Dealer Busted!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". Dealer Busted!", Toast.LENGTH_SHORT).show(); //add a sleep function
             else
-            Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". You Win!", Toast.LENGTH_SHORT).show(); //add a sleep function
+                Toast.makeText(getApplicationContext(), "Dealer scored "+dealerScore+". You Win!", Toast.LENGTH_SHORT).show(); //add a sleep function
         }
         else if(context.equals(OutputContext.TIE)){ //Tie
             Toast.makeText(getApplicationContext(), "Tie, you have a push!", Toast.LENGTH_SHORT).show();
@@ -467,13 +538,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 // do first thing
-               money+=amount;
-               state=mystate;
-               if(startNext.equals("BEFORE"))
+                money+=amount;
+                state=mystate;
+                if(startNext.equals("BEFORE"))
                     checkBefore();
-               else if(startNext.equals("PLAYER"))
+                else if(startNext.equals("PLAYER"))
                     checkPlayer();
-               else
+                else
                     checkDealer();
             }
         };
