@@ -29,16 +29,16 @@ public class Deck implements Serializable {
      R.drawable.white_deck_jack_of_hearts,R.drawable.white_deck_jack_of_spades,R.drawable.white_deck_queen_of_clubs,
      R.drawable.white_deck_queen_of_diamonds,R.drawable.white_deck_queen_of_hearts,R.drawable.white_deck_queen_of_spades,
      R.drawable.white_deck_king_of_clubs,R.drawable.white_deck_king_of_diamonds,R.drawable.white_deck_king_of_hearts,
-     R.drawable.white_deck_king_of_spades};
+     R.drawable.white_deck_king_of_spades}; //array of image ids
 
     public ArrayList<Card> getDeck() {
         return deck;
     }
 
     public Deck(int fill) {
-        deck = new ArrayList<Card>();
+        deck = new ArrayList<Card>(); //Set deck to a new ArrayList of Card objects
         rand = new Random();
-        if(fill==1){
+        if(fill==1){ //initialize deck by populating it and then shuffling it
             populate();
             shuffle();
         }
@@ -61,7 +61,7 @@ public class Deck implements Serializable {
         cards.set(randomNumber,temp);
         }
     }}
-    public void reset(){
+    public void reset(){ //reset deck
 
         deck.clear();
         populate();

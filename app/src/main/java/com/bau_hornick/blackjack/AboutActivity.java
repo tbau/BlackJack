@@ -11,6 +11,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        //HTML in String form
         String aboutPage = "<html><body>"
                 +"<h2>About BlackJack</h2>"
                 +"<p>The objective of BlackJack is simple. Aim for a score of 21, known as a 'BlackJack', in order" +
@@ -27,6 +28,7 @@ public class AboutActivity extends AppCompatActivity {
                 +"<p><b>Developers:</b> Thomas Bau and Alex Hornick</p>"
                 + "</body></html>";
 
+        //Set WebView to contain HTML above
         WebView wv = (WebView) findViewById(R.id.about_page);
         wv.loadData(aboutPage, "text/html", "UTF-8");
 

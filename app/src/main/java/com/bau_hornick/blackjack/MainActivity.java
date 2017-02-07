@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //set up Listeners for 3 buttons
         findViewById(R.id.start_button).setOnClickListener(this);
         findViewById(R.id.about_button).setOnClickListener(this);
         findViewById(R.id.resume_button).setOnClickListener(this);
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        //start activity based on button clicked
         if(v.getId()==R.id.start_button){
         Intent intent=new Intent(this,PlayActivity.class);
         intent.putExtra("resume",false);
