@@ -106,9 +106,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         {
             ImageView dealerImg = (ImageView) findViewById(dealerImageViews[i]);
             dealerImages.add(dealerImg);
+            dealerImages.get(i).setVisibility(View.INVISIBLE);
 
             ImageView playerImg = (ImageView) findViewById(playerImageViews[i]);
             playerImages.add(playerImg);
+            playerImages.get(i).setVisibility(View.INVISIBLE);
         }
         Intent intent = getIntent();
         if(intent.hasExtra("resume")){
