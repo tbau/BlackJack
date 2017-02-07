@@ -121,7 +121,7 @@
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/player_card9_imageView"
+        android:id="@+id/player_card1_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
         android:layout_alignParentBottom="true"
@@ -250,27 +250,6 @@
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card2_imageView" />
 
-    <ImageView
-        android:layout_width="120dp"
-        app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/player_card7_imageView"
-        android:layout_height="100dp"
-        android:visibility="visible"
-        android:elevation="7dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/player_card3_imageView" />
-
-    <ImageView
-        android:layout_width="120dp"
-        app:srcCompat="@drawable/red_card_back"
-        android:id="@+id/player_card8_imageView"
-        android:layout_height="100dp"
-        android:visibility="visible"
-        android:elevation="7dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/player_card4_imageView"
-        android:layout_marginStart="10dp" />
-
     <Button
         android:text="HIT"
         android:layout_width="wrap_content"
@@ -304,6 +283,36 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:text="Stand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stand_button"
+        android:background="#ff4c4c"
+        android:textColor="#fff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card7_imageView"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        android:elevation="7dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/player_card3_imageView" />
+
+    <ImageView
+        android:layout_width="120dp"
+        app:srcCompat="@drawable/red_card_back"
+        android:id="@+id/player_card8_imageView"
+        android:layout_height="100dp"
+        android:visibility="visible"
+        android:elevation="7dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/player_card4_imageView" />
+
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
@@ -312,7 +321,7 @@
         android:visibility="visible"
         android:elevation="7dp"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/hit_button" />
+        android:layout_toEndOf="@+id/player_card5_imageView" />
 
     <ImageView
         android:layout_width="120dp"
@@ -323,15 +332,5 @@
         android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dealer_card10_imageView" />
-
-    <Button
-        android:text="Stand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stand_button"
-        android:background="#ff4c4c"
-        android:textColor="#fff"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
