@@ -163,9 +163,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 TextView tv = (TextView) findViewById(R.id.deck_count_textView);
                 tv.setText(String.valueOf(deck.getDeck().size()));
 
-                if (playerHand.getDeck().size() == 5 && playerScore < 21) {
+                if (playerHand.getDeck().size() == 10 && playerScore < 21) {
 
-                    Toast.makeText(getApplicationContext(), "You have reached the five card limit!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "You have reached the ten card limit!", Toast.LENGTH_SHORT).show();
 
                     Runnable r1 = new Runnable() {
                         @Override
@@ -339,7 +339,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                            outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
                        }
                    }else{
-                       while(dealerScore<17){
+                       while(dealerScore<17&&dealerHand.getDeck().size()<10){
                            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
                            deck.getDeck().remove(deck.getDeck().size()-1);
 
