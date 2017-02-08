@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bau_hornick.blackjack.DealerActivity"
-    android:background="#169C61">
+    android:background="#009c11">
 
     <TextView
         android:text="0"
@@ -37,7 +37,7 @@
 
     <ImageView
         android:layout_width="120dp"
-        app:srcCompat="@drawable/red_card_back"
+        app:srcCompat="@drawable/red_card_back2"
         android:id="@+id/deck_imageView"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
@@ -66,7 +66,7 @@
         android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/holo_orange_light"
+        android:background="#ff9900"
         android:textColor="#fff" />
 
     <TextView
@@ -105,18 +105,6 @@
         android:layout_alignBaseline="@+id/increase_bet_button"
         android:layout_alignBottom="@+id/increase_bet_button"
         android:layout_toEndOf="@+id/increase_bet_button" />
-
-    <Button
-        android:text="Bet+"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/increase_bet_button"
-        android:elevation="0dp"
-        android:visibility="visible"
-        android:background="@android:color/holo_green_light"
-        android:textColor="#fff"
-        android:layout_alignTop="@+id/player_card9_imageView"
-        android:layout_alignParentStart="true" />
 
     <ImageView
         android:layout_width="120dp"
@@ -250,18 +238,6 @@
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card2_imageView" />
 
-    <Button
-        android:text="HIT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hit_button"
-        style="@style/Widget.AppCompat.Button"
-        android:elevation="0dp"
-        android:background="?attr/colorPrimary"
-        android:textColor="#fff"
-        android:layout_alignTop="@+id/player_card9_imageView"
-        android:layout_alignStart="@+id/start_button" />
-
     <ImageView
         android:layout_width="120dp"
         app:srcCompat="@drawable/red_card_back"
@@ -278,8 +254,8 @@
         android:id="@+id/start_button"
         android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
-        android:textColor="#fff"
+        android:background="#33dd33"
+        android:textColor="#ffffff"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -288,10 +264,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/stand_button"
-        android:background="#ff4c4c"
-        android:textColor="#fff"
+        android:background="#f50000"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#ffffff" />
 
     <ImageView
         android:layout_width="120dp"
@@ -332,5 +308,29 @@
         android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dealer_card10_imageView" />
+
+    <Button
+        android:text="Bet+"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/increase_bet_button"
+        android:elevation="0dp"
+        android:visibility="visible"
+        android:background="#33dd33"
+        android:textColor="#fff"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="HIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hit_button"
+        style="@style/Widget.AppCompat.Button"
+        android:elevation="0dp"
+        android:background="#0000f5"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/player_card10_imageView"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
