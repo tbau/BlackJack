@@ -53,55 +53,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             R.id.player_card5_imageView, R.id.player_card6_imageView, R.id.player_card7_imageView,
             R.id.player_card8_imageView, R.id.player_card9_imageView, R.id.player_card10_imageView};
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-    Log.i("HI","-----------onTouch");
-    switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:{
-
-        tv = (TextView) findViewById(R.id.bet_textView);
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip1_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                    &&event.getY()>40&&event.getY()<v.getHeight()-40) {
-            bet += 1;
-        }
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip5_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                &&event.getY()>40&&event.getY()<v.getHeight()-40){
-            bet += 5;
-        }
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip10_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                &&event.getY()>40&&event.getY()<v.getHeight()-40) {
-            bet += 10;
-        }
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip25_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                &&event.getY()>40&&event.getY()<v.getHeight()-40) {
-            bet += 25;
-        }
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip50_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                &&event.getY()>40&&event.getY()<v.getHeight()-40) {
-            bet += 50;
-        }
-        if (state == STATE.BEFORE && v.getId() == R.id.poker_chip100_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
-                &&event.getY()>40&&event.getY()<v.getHeight()-40) {
-            bet += 100;
-        }
-
-        if (bet > money)
-            bet = money;
-        if (bet < 0)
-            bet = 0;
-
-        tv.setText("$" + String.valueOf(bet));
-
-        //Display total money earned next to bet - button
-        tv = (TextView) findViewById(R.id.current_money_textView);
-        tv.setText("$" + String.valueOf(money));
-    }}
-        return false;
-    }
-
-
-    enum STATE{BEFORE, PLAYER,DEALER}
+    enum STATE{BEFORE, PLAYER,DEALER,LOSE}
     private STATE state=STATE.BEFORE;
 
     enum OutputContext{TIE,DEALER,PLAYER,STAND,BUSTED,NATURAL,BLACKJACK}
@@ -116,81 +68,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        Button b;
-        /*b.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:{
-                        //When user holds down on increase Bet Button, continually add to bet
-                        if(timer2==null)
-                            timer2=new Timer();
-                        timer2.scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (state==STATE.BEFORE) {
-                                    bet++;
-                                    if(bet>money)
-                                        bet=money;
-                                    tv = (TextView) findViewById(R.id.bet_textView);
-                                    tv.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            tv.setText(bet + "(" + (money - bet) + ")");
-                                        }
-                                    });
-                                }}
-                        },0,100);
-
-                        return true;}
-
-                    case MotionEvent.ACTION_UP:{
-                        //When user releases hold, stop increasing bet
-                        timer2.cancel();
-                        timer2 = null;
-                        return true;}
-                }
-                return false;}
-        });
-
-        b = (Button) findViewById(R.id.decrease_bet_button);
-        b.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN: {
-                       if(timer1==null)
-                         timer1=new Timer();
-                        //When user holds down on decrease Bet Button, continually subtract from bet
-                        timer1.scheduleAtFixedRate(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (state == STATE.BEFORE) {
-                                    bet--;
-                                    if (bet < 1&&money!=0)
-                                        bet++;
-                                    tv = (TextView) findViewById(R.id.bet_textView);
-                                    tv.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            tv.setText(bet + "(" + (money - bet) + ")");
-                                        }
-                                    });
-                                }}}, 0, 100);
-
-                        return true;}
-
-                    case MotionEvent.ACTION_UP: {
-                        //When user releases hold, stop decreasing bet amount
-                        timer1.cancel();
-                        timer1=null;
-                        return true;
-                    }}
-                return false;}
-        });
-*/
         ImageView im = (ImageView) findViewById(R.id.poker_chip1_imageView);
         im.setOnTouchListener(this);
 
@@ -209,7 +86,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         im = (ImageView) findViewById(R.id.poker_chip100_imageView);
         im.setOnTouchListener(this);
 
-        //Timing for betDecrease and betIncrease
+        im.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                bet=money;
+                tv = (TextView) findViewById(R.id.bet_textView);
+                tv.setText("$"+String.valueOf(bet));
+                return false;
+            }
+        });
+
+        Button b;
 
         //set onClickListeners for buttons
         b = (Button) findViewById(R.id.start_button);
@@ -223,7 +111,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         //When app restarts/resets, grab data from savedInstanceState
         if(savedInstanceState!=null){
-            bet = savedInstanceState.getInt("bet"); //get bet amount
             money = savedInstanceState.getInt("money"); //get player's money amount
             deck=(Deck)savedInstanceState.getSerializable("deck"); //Get deck object as a serializable
 
@@ -265,6 +152,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             if(intent.getBooleanExtra("resume", false)){
                 getFile();}}
 
+        if(money==0){
+            state=STATE.LOSE;
+        }
         //Display number of cards in deck
         tv = (TextView) findViewById(R.id.deck_count_textView);
         tv.setText(String.valueOf(deck.getDeck().size()));
@@ -278,6 +168,54 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         tv.setText("$"+String.valueOf(money));
 
     }
+
+    // OnTouchListener for poker chips
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        Log.i("HI","-----------onTouch");
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:{
+
+                tv = (TextView) findViewById(R.id.bet_textView);
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip1_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40) {
+                    bet += 1;
+                }
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip5_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40){
+                    bet += 5;
+                }
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip10_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40) {
+                    bet += 10;
+                }
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip25_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40) {
+                    bet += 25;
+                }
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip50_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40) {
+                    bet += 50;
+                }
+                if (state == STATE.BEFORE && v.getId() == R.id.poker_chip100_imageView&&event.getX()>40&&event.getX()<v.getWidth()-40
+                        &&event.getY()>40&&event.getY()<v.getHeight()-40) {
+                    bet += 100;
+                }
+                if (bet > money)
+                    bet = money;
+                if (bet < 0)
+                    bet = 0;
+
+                tv.setText("$" + String.valueOf(bet));
+
+                //Display total money earned next to bet - button
+                tv = (TextView) findViewById(R.id.current_money_textView);
+                tv.setText("$" + String.valueOf(money));
+            }}
+        return false;
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -362,9 +300,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             if(bet>money)
                 bet=money;
             if(money==0){ //Reset money amount when user reaches 0
-                Toast.makeText(getApplicationContext(),"You are out of money! Here is 100 to bet with.",Toast.LENGTH_LONG).show();
-                money=100;
-                bet=1;}
+                Toast.makeText(getApplicationContext(),"You are out of money! You lose",Toast.LENGTH_LONG).show();
+                }
             bet=0;
 
             tv = (TextView) findViewById(R.id.bet_textView);
@@ -652,7 +589,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
-        outState.putInt("bet",bet);
         outState.putInt("money",money);
 
         getTotalScore();        //Make sure there are still cards left
