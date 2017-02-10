@@ -9,8 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bau_hornick.blackjack.DealerActivity"
-    android:background="#169C61">
+    tools:context="com.bau_hornick.blackjack.PlayActivity"
+    android:background="#0a6c03">
 
     <TextView
         android:text="0"
@@ -21,28 +21,28 @@
         android:layout_below="@+id/dealer_card2_imageView"
         android:layout_alignStart="@+id/dealer_card4_imageView"
         android:gravity="center"
-        android:layout_alignEnd="@+id/played_cards_imageView"
         android:visibility="invisible" />
 
     <TextView
         android:layout_height="wrap_content"
-        android:id="@+id/current_money_textView"
+        android:id="@+id/money"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/decrease_bet_button"
         android:layout_below="@+id/increase_bet_button"
         android:layout_width="40dp"
         android:textColor="#000000"
-        android:gravity="left|center"
-        android:text="100" />
+        android:gravity="start|center"
+        android:text="100"
+        android:visibility="invisible" />
 
     <ImageView
         android:layout_width="120dp"
-        app:srcCompat="@drawable/red_card_back"
+        app:srcCompat="@drawable/red_card_back2"
         android:id="@+id/deck_imageView"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/bet_textView" />
+        android:layout_toStartOf="@+id/bet" />
 
     <TextView
         android:text="52"
@@ -62,11 +62,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/decrease_bet_button"
-        android:elevation="0dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/holo_orange_light"
+        android:background="#ff9900"
         android:textColor="#fff" />
 
     <TextView
@@ -78,7 +77,6 @@
         android:layout_below="@+id/dealer_card2_imageView"
         android:layout_alignStart="@+id/dealer_card4_imageView"
         android:gravity="center"
-        android:layout_alignEnd="@+id/played_cards_imageView"
         android:visibility="invisible" />
 
     <ImageView
@@ -91,32 +89,21 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/deck_imageView"
         android:layout_marginStart="31dp"
-        android:elevation="-1dp" />
+        />
 
     <TextView
         android:layout_height="wrap_content"
-        android:id="@+id/bet_textView"
+        android:id="@+id/bet"
         android:text="1(99)"
-        android:gravity="left|center"
+        android:gravity="start|center"
         android:layout_width="70dp"
         android:textColor="#000000"
         android:maxLength="10"
         android:textSize="14sp"
         android:layout_alignBaseline="@+id/increase_bet_button"
         android:layout_alignBottom="@+id/increase_bet_button"
-        android:layout_toEndOf="@+id/increase_bet_button" />
-
-    <Button
-        android:text="Bet+"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/increase_bet_button"
-        android:elevation="0dp"
-        android:visibility="visible"
-        android:background="@android:color/holo_green_light"
-        android:textColor="#fff"
-        android:layout_alignTop="@+id/player_card9_imageView"
-        android:layout_alignParentStart="true" />
+        android:layout_toEndOf="@+id/increase_bet_button"
+        android:visibility="invisible" />
 
     <ImageView
         android:layout_width="120dp"
@@ -135,7 +122,7 @@
         android:visibility="visible"
         android:layout_marginStart="15dp"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/current_money_textView" />
+        android:layout_toEndOf="@+id/money" />
 
     <ImageView
         android:layout_width="120dp"
@@ -153,7 +140,7 @@
         android:layout_height="100dp"
         android:visibility="visible"
         android:layout_alignTop="@+id/dealer_card1_imageView"
-        android:layout_toEndOf="@+id/bet_textView"
+        android:layout_toEndOf="@+id/bet"
         android:layout_marginStart="14dp" />
 
     <ImageView
@@ -181,7 +168,6 @@
         android:id="@+id/player_card4_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="1dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dealer_score_textView" />
 
@@ -236,7 +222,6 @@
         android:id="@+id/player_card5_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/textView" />
 
@@ -246,21 +231,8 @@
         android:id="@+id/player_card6_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card2_imageView" />
-
-    <Button
-        android:text="HIT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hit_button"
-        style="@style/Widget.AppCompat.Button"
-        android:elevation="0dp"
-        android:background="?attr/colorPrimary"
-        android:textColor="#fff"
-        android:layout_alignTop="@+id/player_card9_imageView"
-        android:layout_alignStart="@+id/start_button" />
 
     <ImageView
         android:layout_width="120dp"
@@ -278,8 +250,8 @@
         android:id="@+id/start_button"
         android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
-        android:textColor="#fff"
+        android:background="#33dd33"
+        android:textColor="#ffffff"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -288,10 +260,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/stand_button"
-        android:background="#ff4c4c"
-        android:textColor="#fff"
+        android:background="#f50000"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#ffffff" />
 
     <ImageView
         android:layout_width="120dp"
@@ -299,7 +271,6 @@
         android:id="@+id/player_card7_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card3_imageView" />
 
@@ -309,7 +280,6 @@
         android:id="@+id/player_card8_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card4_imageView" />
 
@@ -319,7 +289,6 @@
         android:id="@+id/player_card9_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/player_card5_imageView" />
 
@@ -329,8 +298,103 @@
         android:id="@+id/player_card10_imageView"
         android:layout_height="100dp"
         android:visibility="visible"
-        android:elevation="7dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/dealer_card10_imageView" />
+
+    <Button
+        android:text="Bet+"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/increase_bet_button"
+        android:visibility="invisible"
+        android:background="#33dd33"
+        android:textColor="#fff"
+        android:layout_alignTop="@+id/player_card1_imageView"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="HIT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hit_button"
+        style="@style/Widget.AppCompat.Button"
+        android:background="#0000f5"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/player_card10_imageView"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip1"
+        android:id="@+id/poker_chip1_imageView"
+        android:layout_above="@+id/increase_bet_button"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/dealer_card1_imageView" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip5"
+        android:id="@+id/poker_chip5_imageView"
+        android:layout_alignTop="@+id/poker_chip1_imageView"
+        android:layout_toStartOf="@+id/dealer_card2_imageView" />
+
+    <ImageView
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip10"
+        android:id="@+id/poker_chip10_imageView"
+        android:layout_above="@+id/money"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/money"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        android:layout_width="wrap_content" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip50"
+        android:id="@+id/poker_chip50_imageView"
+        android:layout_below="@+id/poker_chip1_imageView"
+        android:layout_toStartOf="@+id/money" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/current_money_textView"
+        android:layout_alignEnd="@+id/player_card9_imageView"
+        android:layout_toEndOf="@+id/poker_chip5_imageView"
+        android:layout_above="@+id/player_card1_imageView"
+        android:layout_below="@+id/dealer_card1_imageView"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bet_textView"
+        android:layout_alignStart="@+id/poker_chip100_imageView"
+        android:layout_toStartOf="@+id/player_card1_imageView"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip25"
+        android:id="@+id/poker_chip25_imageView"
+        android:layout_above="@+id/decrease_bet_button"
+        android:layout_alignStart="@+id/poker_chip5_imageView" />
+
+    <ImageView
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        app:srcCompat="@drawable/poker_chip100"
+        android:id="@+id/poker_chip100_imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/poker_chip5_imageView" />
 
 </RelativeLayout>
