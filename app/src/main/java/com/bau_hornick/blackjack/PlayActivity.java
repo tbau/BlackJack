@@ -112,6 +112,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         //When app restarts/resets, grab data from savedInstanceState
         if(savedInstanceState!=null){
             money = savedInstanceState.getInt("money"); //get player's money amount
+            bet=savedInstanceState.getInt("bet");
             deck=(Deck)savedInstanceState.getSerializable("deck"); //Get deck object as a serializable
 
             tv = (TextView) findViewById(R.id.current_money_textView); //setting textViews
@@ -173,7 +174,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.i("HI","-----------onTouch");
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:{
 
@@ -229,15 +229,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             checkPlayer();//start player's turn
 
         }else if(v.getId()==R.id.hit_button&&state==STATE.PLAYER) {//When 'HIT' button is clicked after game is started.
-
-            if (playerHand.getDeck().size() < 5) { //if number of cards in player hand is less than 5
+        Button b = (Button) findViewById(R.id.hit_button);
+            b.setClickable(false);
+            b = (Button) findViewById(R.id.stand_button);
+            b.setClickable(false);
+            if (playerHand.getDeck().size() < 10) { //if number of cards in player hand is less than 5
                 playerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size() - 1)); //add card to player hand from deck
                 deck.getDeck().remove(deck.getDeck().size() - 1); //remove the card that was added to player from deck
 
                 //display image for card, set to visible
                 playerImages.get(playerHand.getDeck().size() - 1).setImageResource(playerHand.getDeck().get(playerHand.getDeck().size() - 1).getImage());
                 playerImages.get(playerHand.getDeck().size() - 1).setVisibility(View.VISIBLE);
+
                 countPlayerScore(); //Get player's current score after they get a new card
+
                 tv = (TextView) findViewById(R.id.deck_count_textView);
                 tv.setText(String.valueOf(deck.getDeck().size())); //update deck size in TextView
 
@@ -258,6 +263,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (playerScore > 21) {
                     outputMessage(OutputContext.BUSTED,-bet,STATE.BEFORE,"BEFORE"); //Player busts
                 }
+                b = (Button) findViewById(R.id.hit_button);
+                b.setClickable(true);
+                b = (Button) findViewById(R.id.stand_button);
+                b.setClickable(true);
+
             }}else if (v.getId() == R.id.stand_button && state == STATE.PLAYER) { //Player stands, dealer's turn starts
 
             countPlayerScore(); //Count player score
@@ -319,9 +329,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             hasBlackJack=false;
 
             Button b = (Button) findViewById(R.id.stand_button);  //Prevent standing or hitting until cards are drawn
-            b.setEnabled(false);
+            b.setClickable(false);
             b = (Button) findViewById(R.id.hit_button);
-            b.setEnabled(false);
+            b.setClickable(false);
 
             //First two cards
             dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
@@ -402,9 +412,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                         outputMessage(OutputContext.BLACKJACK,0,STATE.DEALER,"DEALER");}
 
                     Button b = (Button) findViewById(R.id.stand_button);
-                    b.setEnabled(true);
+                    b.setClickable(true);
                     b = (Button) findViewById(R.id.hit_button);
-                    b.setEnabled(true);
+                    b.setClickable(true);
                 }
             };
 
@@ -416,70 +426,75 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
     public void checkDealer(){
         if(state==STATE.DEALER){
+            Button b = (Button) findViewById(R.id.hit_button);
+            b.setClickable(false);
+            b = (Button) findViewById(R.id.stand_button);
+            b.setClickable(false);
+
             //Count both scores when State is Dealer
             countDealerScore();
             countPlayerScore();
 
             final Handler h = new Handler();
 
-            //display dealer card that was originally displayed as the card back
-            dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
+            try {
+                //display dealer card that was originally displayed as the card back
+                dealerImages.get(0).setImageResource(dealerHand.getDeck().get(0).getImage());
 
-            Runnable r1 = new Runnable() {
-                @Override
-                public void run() {
-                    if(dealerScore == 21)
-                    {
-                        //dealer wins
-                        outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");}
-                    else if(hasBlackJack){
-                        //player Wins, display message
-                        outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");}
-
-                    else if(dealerScore<21&&dealerScore>=17){
-                        if(dealerScore==playerScore){
-                            outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE"); //tie
-                        }
-                        else if(dealerScore>playerScore){
-                            outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE"); //dealer wins
-                        }
-                        else{
-                            outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE"); //player wins
-                        }
-                    }else{
-                        while(dealerScore<17&&dealerHand.getDeck().size()<10){
-                            //keep adding cards to deck while score isn't 17 and they haven't reach 10 card limit
-                            dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size()-1));
-                            deck.getDeck().remove(deck.getDeck().size()-1);
-
-                            //display new count of cards in Deck
-                            tv = (TextView) findViewById(R.id.deck_count_textView);
-                            tv.setText(String.valueOf(deck.getDeck().size()));
-
-                            //display image from dealerHand
-                            dealerImages.get(dealerHand.getDeck().size()-1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size()-1).getImage());
-                            dealerImages.get(dealerHand.getDeck().size()-1).setVisibility(View.VISIBLE);
-
-                            countDealerScore(); //check score again
-                        }
-                        Runnable r2 = new Runnable() {
-                            @Override
-                            public void run() {
-                                //Check if it's a win, tie, or lose for player
-                                if(dealerScore==playerScore)
-                                    outputMessage(OutputContext.TIE,0,STATE.BEFORE,"BEFORE");
-                                else if(dealerScore>playerScore&&dealerScore<=21)
-                                    outputMessage(OutputContext.DEALER,-bet,STATE.BEFORE,"BEFORE");
-                                else
-                                    outputMessage(OutputContext.PLAYER,bet,STATE.BEFORE,"BEFORE");
-
+                Runnable r1 = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (dealerScore == 21) {
+                            //dealer wins
+                            outputMessage(OutputContext.DEALER, -bet, STATE.BEFORE, "BEFORE");
+                        } else if (hasBlackJack) {
+                            //player Wins, display message
+                            outputMessage(OutputContext.PLAYER, bet, STATE.BEFORE, "BEFORE");
+                        } else if (dealerScore < 21 && dealerScore >= 17) {
+                            if (dealerScore == playerScore) {
+                                outputMessage(OutputContext.TIE, 0, STATE.BEFORE, "BEFORE"); //tie
+                            } else if (dealerScore > playerScore) {
+                                outputMessage(OutputContext.DEALER, -bet, STATE.BEFORE, "BEFORE"); //dealer wins
+                            } else {
+                                outputMessage(OutputContext.PLAYER, bet, STATE.BEFORE, "BEFORE"); //player wins
                             }
-                        };
-                        h.postDelayed(r2,1000);
+                        } else {
+                            while (dealerScore < 17 && dealerHand.getDeck().size() < 10) {
+                                //keep adding cards to deck while score isn't 17 and they haven't reach 10 card limit
+                                dealerHand.getDeck().add(deck.getDeck().get(deck.getDeck().size() - 1));
+                                deck.getDeck().remove(deck.getDeck().size() - 1);
+
+                                //display new count of cards in Deck
+                                tv = (TextView) findViewById(R.id.deck_count_textView);
+                                tv.setText(String.valueOf(deck.getDeck().size()));
+
+                                //display image from dealerHand
+                                dealerImages.get(dealerHand.getDeck().size() - 1).setImageResource(dealerHand.getDeck().get(dealerHand.getDeck().size() - 1).getImage());
+                                dealerImages.get(dealerHand.getDeck().size() - 1).setVisibility(View.VISIBLE);
+
+                                countDealerScore(); //check score again
+                            }
+                            Runnable r2 = new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Check if it's a win, tie, or lose for player
+                                    if (dealerScore == playerScore)
+                                        outputMessage(OutputContext.TIE, 0, STATE.BEFORE, "BEFORE");
+                                    else if (dealerScore > playerScore && dealerScore <= 21)
+                                        outputMessage(OutputContext.DEALER, -bet, STATE.BEFORE, "BEFORE");
+                                    else
+                                        outputMessage(OutputContext.PLAYER, bet, STATE.BEFORE, "BEFORE");
+
+                                }
+                            };
+                            h.postDelayed(r2, 1000);
+                        }
                     }
-                }
-            };
-            h.postDelayed(r1,1000);}
+                };
+                h.postDelayed(r1, 1000);
+            }catch (Exception e){}
+
+        }
     }
 
     //counts score for dealer hand
@@ -561,6 +576,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         else if(context.equals(OutputContext.BLACKJACK)) //BlackJack
             Toast.makeText(getApplicationContext(), "You have a Blackjack!", Toast.LENGTH_SHORT).show();
 
+        money+=amount;
+        if(mystate==STATE.PLAYER||mystate==STATE.DEALER)
+        state=mystate;
+
+        Button b = (Button) findViewById(R.id.hit_button);
+        b.setClickable(true);
+        b = (Button) findViewById(R.id.stand_button);
+        b.setClickable(true);
+
         final Handler h=new Handler();
 
         //after output message, check what to start next.
@@ -568,7 +592,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 // do first thing
-                money+=amount;
+
                 state=mystate;
                 switch (startNext) {
                     case "BEFORE":
@@ -590,6 +614,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     protected void onSaveInstanceState(Bundle outState) {
 
         outState.putInt("money",money);
+        outState.putInt("bet",bet);
 
         getTotalScore();        //Make sure there are still cards left
 
@@ -598,6 +623,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         deck.getDeck().remove(deck.getDeck().size()-1);
         deck.getDeck().remove(deck.getDeck().size()-1);
 
+        writeToFile();
         outState.putSerializable("deck",deck);
 
         super.onSaveInstanceState(outState);
