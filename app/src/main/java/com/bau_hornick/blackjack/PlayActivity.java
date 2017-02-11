@@ -2,6 +2,8 @@ package com.bau_hornick.blackjack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -168,7 +170,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         tv = (TextView) findViewById(R.id.current_money_textView);
         tv.setText("$"+String.valueOf(money));
 
-    }
+       }
 
     // OnTouchListener for poker chips
     @Override
@@ -319,10 +321,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             tv = (TextView) findViewById(R.id.current_money_textView);
             tv.setText("$"+String.valueOf(money));
 
-            writeToFile();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
+        writeToFile();
 
     }
     public void checkPlayer(){
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
         if(state==STATE.PLAYER){
             playerScore=0;
@@ -625,6 +631,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         writeToFile();
         outState.putSerializable("deck",deck);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
         super.onSaveInstanceState(outState);
     }
