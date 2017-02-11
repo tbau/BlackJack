@@ -624,11 +624,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
         getTotalScore();        //Make sure there are still cards left
 
-        deck.getDeck().remove(deck.getDeck().size()-1);    //Remove top 4 cards to prevent cheating
-        deck.getDeck().remove(deck.getDeck().size()-1);
-        deck.getDeck().remove(deck.getDeck().size()-1);
-        deck.getDeck().remove(deck.getDeck().size()-1);
-
         writeToFile();
         outState.putSerializable("deck",deck);
 
